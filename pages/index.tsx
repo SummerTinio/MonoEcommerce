@@ -2,28 +2,26 @@ import type { NextPage, NextPageContext, InferGetStaticPropsType } from 'next';
 import { useEffect } from 'react';
 import styles from '../styles/Home.module.css';
 
-export const getStaticProps = async () => { // must be async
+import getAllProducts from '../controller/get-all-products';
+
+export const getStaticProps = async () => {
+  const products = await getAllProducts();
   return {
     props: {
-      products: [3, 2, 1]
+      products,
     },
-    revalidate: 4 * 60 * 60
+    revalidate: 4 * 60 * 60,
   };
 };
 
 const Home = function HomeComponent({
-  products
+  products,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-
   useEffect(() => {
     console.log('its working!');
   }, []);
 
-  return (
-    <h1>
-      {products}
-    </h1>
-  );
+  return <h1>{products}</h1>;
 };
 
 export default Home;
