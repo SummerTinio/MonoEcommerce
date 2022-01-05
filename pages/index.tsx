@@ -21,7 +21,9 @@ const Home = function HomeComponent({
     console.log('its working!');
   }, []);
 
-  return <h1>{products}</h1>;
+  return (
+    <ul>{JSON.stringify(products)}</ul>
+  );
 };
 
 export default Home;
