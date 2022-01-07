@@ -1,6 +1,7 @@
 import { promisify } from 'util';
 
 import express, { Request, Response } from 'express';
+import helmet from 'helmet';
 import logger from 'loglevel';
 
 import { NextHandlerType } from '.';
@@ -12,6 +13,8 @@ function startServer(handle: NextHandlerType, port: number) {
   const app = express();
 
   app.disable('x-powered-by');
+
+  app.use(helmet());
 
   app.use(express.json());
 
