@@ -11,6 +11,8 @@ import getRoutes from './routes';
 function startServer(handle: NextHandlerType, port: number) {
   const app = express();
 
+  app.use(express.json());
+
   app.use('/api', getRoutes());
 
   app.use(errorHandler);
