@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "lint": "prettier --check .",
     "format": "prettier --config .prettierrc . --write",
-    "lintstaged": "lint-staged"
+    "lintstaged": "lint-staged",
+    "prisma:gen": "npx prisma generate"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
