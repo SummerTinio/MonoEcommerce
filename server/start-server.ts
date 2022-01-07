@@ -1,6 +1,7 @@
 import { promisify } from 'util';
 
 import express, { Request, Response } from 'express';
+// import { PrismaClient } from '@prisma/client';
 import logger from 'loglevel';
 
 import { NextHandlerType } from '.';
@@ -9,6 +10,8 @@ import { setUpCloseOnExit } from './utils';
 import getRoutes from './routes';
 
 function startServer(handle: NextHandlerType, port: number) {
+  // const prisma = new PrismaClient();
+
   const app = express();
 
   app.use(express.json());
