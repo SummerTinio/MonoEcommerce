@@ -189,7 +189,7 @@ As a **buyer**, users may:
 ## **Summer's Development Process**
 
 ### **Project 7-day Timeline**
-- 2.5 Days: Plan it out -- API Research, Wireframes, Database Table Schemas, App scaffolding, Update Readme as I go
+- 2.5 Days: Plan it out -- 🟩🟩⬛ API Research, 🟩🟩🟩 Wireframes, 🟩🟩🟩 Database Table Schemas, 🟩🟩⬛ App scaffolding, 🟩🟩🟩 REST API structure, 🟩🟩🟩 Update Readme as I go
  
 - 2 Days: Backend Implementation
  
