@@ -186,6 +186,19 @@ As a **buyer**, users may:
     - **Husky** branch and commit message **pre-commit formatting hooks**
         - to **auto-enforce consistency in commit practices**
 
+## **App Architecture**
+- The entire app at a high level is built with MVC (Model-View-Controller) architecture.
+- **M - Prisma Schema --> PostgreSQL Tables**
+    - whose point is to enforce a particular structure (schema) on that data
+    - mapping Prisma Schema to Relational PostgreSQL Tables
+
+- **V - React + Redux**
+    - whose point is to display, on the UI, the data stored in the Redux object
+
+- **C - Express-NextJS Custom Server**
+    - whose point is to facilitate communications through Prisma (the ORM, similar with what Mongoose does for MongoDB), to and from the Model (in Postgres) with the View (from React) and as well as to actually modify both the Model and the View. To modify the Model, Express (the web server) communicates changes to Postgres (the database) through Prisma (the ORM) which structures data and generates the corresponding PostgreSQL query before storing in Postgres.  To modify the View, the Custom NextJS-Express server hydrates props server-side before the response reaches the client -- it generates the static markup for the client to consume on demand (i.e. upon making a request).
+
+
 ## **Summer's Development Process**
 
 ### **Project 7-day Timeline**
