@@ -1,29 +1,32 @@
-import type { NextPage, NextPageContext, InferGetStaticPropsType } from 'next';
 import { useEffect } from 'react';
-import styles from '../styles/Home.module.css';
+import { NextPageContext } from 'next';
+import axios from 'axios';
 
-import getAllProducts from '../controller/get-all-products';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import SignInComponent from '../frontend/src/layouts/SigninComponent';
 
-export const getStaticProps = async () => {
-  const products = await getAllProducts();
-  return {
-    props: {
-      products,
-    },
-    revalidate: 4 * 60 * 60,
-  };
-};
+import StyledButton from '../frontend/src/components/presentational/StyledButton';
 
-const Home = function HomeComponent({
-  products,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+interface indexProps {
+
+}
+
+const index = function indexComponent<indexProps>({ }) {
   useEffect(() => {
     console.log('its working!');
   }, []);
 
-  return (
-    <ul>{JSON.stringify(products)}</ul>
-  );
-};
+  const text = `you're at the / page!`
 
-export default Home;
+  return (
+    <h1>
+      {text}
+      <StyledButton />
+    </h1>
+  );
+}
+
+export default index;
