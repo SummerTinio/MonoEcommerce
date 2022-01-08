@@ -5,7 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// schema.prisma
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -16,8 +15,51 @@ model Post {
   title     String
   content   String?
   published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
+
   authorId  Int?
+  reviewsId Int?
+
+  author  User?   @relation(fields: [authorId], references: [id])
+  reviews Review? @relation(fields: [reviewsId], references: [id])
+
+  @@map(name: "post")
+}
+
+model Order {
+  id    Int         @id @default(autoincrement())
+  user  User?       @relation(fields: [user_id], references: [id])
+  items OrderItem[]
+
+  userId    Int?
+  reviewsId Int?
+
+  reviews Review? @relation(fields: [reviewsId], references: [id])
+
+  @@map(name: "order")
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  quantity Int
+  price    Float
+
+  order_id   Int?
+  product_id Int?
+
+  products Product? @relation(fields: [product_id], references: [id])
+  order    Order?   @relation(fields: [order_id], references: [id])
+
+  @@map(name: "order_item")
+}
+
+model Product {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Float
+
+  orderItems OrderItem[]
+
+  @@map(name: "product")
 }
 
 model User {
@@ -26,66 +68,27 @@ model User {
   email     String?  @unique
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
-  posts     Post[]
 
-  @@map(name: "users")
+  // user : MultipleRecords[]
+  posts   Post[]
+  orders  Order[]
+  reviews Review[]
+
+  @@map(name: "user")
 }
 
-// - Tables
+model Review {
+  id              Int      @id @default(autoincrement())
+  rating          Int?
+  body            String?  @unique
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  dateLastUpdated DateTime @updatedAt @map(name: "updated_at")
+  numIsHelpful    Int      @default(autoincrement()) @map(name: "num_is_helpful")
 
-model UserAuth {
-  - user_auth
-  - email
-  - hashed_password
-  - user_auth to users - 1:1
-}
+  productId Product? @relation(fields: [id], references: [id])
+  userId    User?    @relation(fields: [id], references: [id])
 
-model User {
-  - users
-  - user_id
-  - member_type
-  - username
-  - users to user_auth - 1:1
-  - users to orders - 1:many
-}
+  orders Order[]
 
-// aka course
-model Product {
-  - products
-  - product_id
-  - product_name
-  - average_rating
-  - price
-  - date_last_updated
-  - products to orders - many:1
-  - products to orders - many:many
-  - products to reviews - 1:many
-}
-
-model Reviews {
-  - reviews
-  - product_id
-  - user_id - required to create a review
-  - date_last_updated
-  - body - required column
-  - rating
-  - is_helpful - no. of times thumbs-upped
-  - reviews to users - many:1
-  - reviews to products - many:1
-}
-
-model Orders {
-  - orders
-  - user_id
-
-  - product_list
-  - product_id
-
-  - purchase_date_time
-  - order_status
-
-  - orders to users - many:1
-  - orders to users - many:many
-
-  - GROUP_BY query - sort by purchase date
+  @@map(name: "review")
 }
