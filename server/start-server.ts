@@ -1,7 +1,10 @@
 import { promisify } from 'util';
 
 import express, { Request, Response } from 'express';
+
 // import { PrismaClient } from '@prisma/client';
+import helmet from 'helmet';
+
 import logger from 'loglevel';
 
 import { NextHandlerType } from '.';
@@ -13,6 +16,10 @@ function startServer(handle: NextHandlerType, port: number) {
   // const prisma = new PrismaClient();
 
   const app = express();
+
+  app.disable('x-powered-by');
+
+  app.use(helmet());
 
   app.use(express.json());
 
