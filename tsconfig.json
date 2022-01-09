@@ -17,12 +17,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "paths": {
+      "@mui/styled-engine": [
+        // note: mapping is relative to baseUrl
+        "./node_modules/@mui/styled-engine-sc"
+      ]
+    },
     "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "frontend/src/components/logic/SignUp.js"
   ],
   "exclude": [
     "node_modules"

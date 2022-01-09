@@ -1,4 +1,23 @@
+// "with Transpile Modules"
+const withTranspileModules = require('next-transpile-modules')([
+  '@mui/material',
+  '@mui/system',
+  '@mui/icons-material', // If @mui/icons-material is being used
+]);
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+module.exports = withTranspileModules({
   reactStrictMode: true,
-};
+  /**
+   *
+   * webpack config for resolving aliases
+   * maps styled engine to styled-engine-sc (specifically for styled components)
+   */
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@mui/styled-engine': '@mui/styled-engine-sc',
+    };
+    return config;
+  },
+});
