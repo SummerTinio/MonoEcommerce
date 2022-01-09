@@ -64,12 +64,12 @@ model Order {
   // - need 2 things
   // (1) copy of primary key of User user_id
   // (2) userId Int
-  purchaseDateTime DateTime    @default(now())
-  orderStatus      OrderStatus @default(PENDING)
+  purchaseDateTime DateTime    @default(now()) @map("purchase_date_time")
+  orderStatus      OrderStatus @default(PENDING) @map("order_status")
 
 
   // when u create a reln, u have to have an existing field that u reference, and u need the connection
-  userId Int // User? @relation(fields: [id], references: [id])
+  userId Int   @map("user_id") // User? @relation(fields: [id], references: [id]) 
   // see error below? it's asking for the camelCased version of that id
   user   User? @relation(fields: [userId], references: [id])
   // (2) Not PSQL Fields -- only Relations (Referential links)
@@ -97,8 +97,8 @@ model Order {
   items OrderItem[]
 
   Review   Review? @relation(fields: [reviewId], references: [id])
-  reviewId Int?
-  @@map(name: "order")
+  reviewId Int?    @map("review_id")
+  @@map(name: "orders")
 }
 
 // no need for this since reverse relation does this for us (via prisma)
@@ -121,7 +121,7 @@ model OrderItem {
   // for this use case, a field of [id] referencing [id] from the Order model
   order    Order?   @relation(fields: [orderId], references: [id])
 
-  @@map(name: "order_item")
+  @@map(name: "order_items")
 }
 
 // product-review fix
@@ -131,15 +131,15 @@ model Product {
   price             Float
   averageRating     Float    @default(0) @map("average_rating")
   variablePrice     Float    @map("variable_price")
-  dateLastUpdated   DateTime @default(now()) @updatedAt
-  availableQuantity Int
+  dateLastUpdated   DateTime @default(now()) @updatedAt @map("date_last_updated")
+  availableQuantity Int      @map("available_quantity")
   // tells prisma, "if i ask u to get a product, u can also send me an array of reviews connected to this product"
   // you ask the product, "do you have any review that is referencing this, connected to you?"
   reviews           Review[]
 
-  orderItems OrderItem[]
+  orderItems OrderItem[] // can't @map("order_items") since this is a reln field.
 
-  @@map(name: "product")
+  @@map(name: "products")
 }
 
 enum Role {
@@ -170,21 +170,21 @@ model User {
   orders  Order[]
   reviews Review[]
 
-  UserAuth UserAuth[]
-  @@map(name: "user")
+  UserAuth UserAuth[] // can't @map("user_auth") either since this is a reverse reln (not a field)
+  @@map(name: "users")
 }
 
 model UserAuth {
   id             Int    @id @default(autoincrement())
   email          String
-  hashedPassword String
+  hashedPassword String @map("hashed_password")
 
   // when creating a relation, the 2 following lines must come in a pair -- to be connected with
-  usernameAuthCopy String
+  usernameAuthCopy String @map("username_auth_copy")
   username         User?  @relation(fields: [usernameAuthCopy], references: [username])
   // an existing field (not a relation) on the other model (in this case, existing field is User/username)
 
-  userId Int?
+  userId Int? @map("user_id")
 }
 
 model Review {
@@ -210,19 +210,19 @@ model Review {
   // see productId Product? @relation(fields: [id], references: [id])?
   // yes, you can also reference plain 'id's on field even if its the same references: [id]
   //
-  productId Int // <--- simple fields, without any logic IF without a relationship
+  productId Int     @map("product_id") // <--- simple fields, without any logic IF without a relationship
   product   Product @relation(fields: [productId], references: [id]) // <---- This!! 
   // is what makes that field 'strong' i.e. holds meaning
 
-  userId Int // <-- add this line to save userId value
+  userId Int  @map("user_id") // <-- add this line to save userId value
   user   User @relation(fields: [userId], references: [id]) // <-- add this line to create the relationship with it
 
   // create post id that's an Int... but must be same data type as this
-  postId Int
+  postId Int @map("post_id")
   //  post   Post @relation(fields: [postId], references: [id])
   // ? optional
 
   orders Order[]
 
-  @@map(name: "review")
+  @@map(name: "reviews")
 }
