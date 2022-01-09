@@ -6,9 +6,7 @@ import theme from '../styles/theme';
 import { NextPageContext } from 'next';
 import { style } from '@mui/system';
 
-interface MyDocumentProps {
-
-}
+interface MyDocumentProps { }
 
 const MyDocument = function MyDocumentComponent<MyDocumentProps>({ }) {
   return (
@@ -17,6 +15,14 @@ const MyDocument = function MyDocumentComponent<MyDocumentProps>({ }) {
         <Head>
           {/** PWA primary color */}
           <meta content={theme.palette.primary.main} name="theme-color" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          />
         </Head>
         <body>
           <Main />
@@ -25,7 +31,7 @@ const MyDocument = function MyDocumentComponent<MyDocumentProps>({ }) {
       </Html>
     </>
   );
-}
+};
 
 MyDocument.getInitialProps = async (ctx: NextPageContext) => {
   const sheet = new ServerStyleSheet();
