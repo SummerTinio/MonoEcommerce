@@ -22,25 +22,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
+//model Post {
+//  id        Int     @id @default(autoincrement())
+//  title     String
+//  content   String?
+//  published Boolean @default(false)
 
-  authorId  Int? // ? means optional
-  reviewsId Int?
-  // for @relation(fields: [use the camelCased modelId],
-  // references: [an actual field that exists on postgres, which is just id]
-  //                                        -- i.e. id for table] (actual psql field=id)
-  //                                        -- not a relation (rel=reviewsId)
-  author    User? @relation(fields: [authorId], references: [id])
-  // reviews   Review? @relation(fields: [reviewsId], references: [id])
+//  authorId  Int? // ? means optional
+//  reviewsId Int?
+// for @relation(fields: [use the camelCased modelId],
+// references: [an actual field that exists on postgres, which is just id]
+//                                        -- i.e. id for table] (actual psql field=id)
+//                                        -- not a relation (rel=reviewsId)
+//  author    User? @relation(fields: [authorId], references: [id])
+// reviews   Review? @relation(fields: [reviewsId], references: [id])
 
-  // @@map maps current Model name to Postgres naming standards
-  Review Review[]
-  @@map(name: "post")
-}
+// @@map maps current Model name to Postgres naming standards
+//  Review Review[]
+//  @@map(name: "post")
+//}
 
 // Pending Questions:
 // ---> **(1)** What's an attribute? versus a field?
@@ -166,7 +166,7 @@ model User {
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
   // user : MultipleRecords[]
-  posts   Post[]
+  //  posts   Post[]
   orders  Order[]
   reviews Review[]
 
@@ -219,9 +219,8 @@ model Review {
 
   // create post id that's an Int... but must be same data type as this
   postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  //  post   Post @relation(fields: [postId], references: [id])
   // ? optional
-
 
   orders Order[]
 
