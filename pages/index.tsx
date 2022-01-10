@@ -31,54 +31,32 @@ const ZappConceptsLogoContainer = styled.div`
 `;
 
 const ProductNameContainer = styled.div`
-padding: ${padding};
-width: 10vw;
-min-width: min-content;
-background-color: white;
+  padding: ${padding};
+  width: 10vw;
+  min-width: min-content;
+  background-color: white;
 `;
 
 const ShortText = styled.p`
-color: blue;
+  color: blue;
 `;
 
 const PriceContainer = styled.div`
-padding: ${padding};
-width: 17%;
-min-width: min-content;
-background-color:yellowgreen;
+  padding: ${padding};
+  width: 17%;
+  min-width: min-content;
+  background-color: yellowgreen;
 `;
 
 const PriceText = styled.p`
-color: red;
+  color: red;
 `;
 
 const MarqueeProductNameContainer = styled.div`
-padding: ${padding};
-width: 10vw;
-min-width: min-content;
-background-color: blue;
-`;
-
-const MarqueePriceNameContainer = styled.div`
-padding: ${padding};
-width: 10vw;
-min-width: min-content;
-background-color: white;
-`;
-
-const MarqueeShortText = styled.p`
-color: blue;
-`;
-
-const MarqueePriceContainer = styled.div`
-padding: ${padding};
-width: 100%;
-min-width: min-content;
-background-color:yellowgreen;
-`;
-
-const MarqueePriceText = styled.p`
-color: red;
+  padding: ${padding};
+  width: 10vw;
+  min-width: min-content;
+  background-color: blue;
 `;
 
 
@@ -95,7 +73,6 @@ const NavContainer = styled.nav`
 `;
 
 const NavItems = styled.span`
-  
   width: 2rem;
   background-color: orange;
   top: 0;
@@ -105,24 +82,33 @@ const NavItems = styled.span`
 `;
 
 const MarqueeItemContainer = styled.div`
-display: flex;
-background-color: lightblue;
-flex-wrap: column;
-height: 80%;
-width: 40%;
-max-height: 80%;
-max-width: 80%;
+  display: flex;
+  background-color: lightblue;
+  flex-direction: column;
+  height: 80%;
+  width: 40%;
+  max-height: 80%;
+  max-width: 80%;
 `;
 
-const MarqueeItem = styled.div`
-background-color:pink;
-
+const MarqueeProduct = styled.span`
+flex: 1;
+background-color: yellowgreen;
 `;
+
+const MarqueeShortText = styled.span`
+background-color: blue;
+`;
+
+const MarqueePrice = styled.span`
+background-color: green;
+`;
+
 
 const ThreeIconContainer = styled.div`
-display: flex;
-align-items: baseline;
-justify-content: space-between;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 `;
 
 const ProductContainer = styled.div`
@@ -144,7 +130,7 @@ const MarqueeContainer = styled.section`
 `;
 
 const MarqueeProductImage = styled.img`
-background-color: green;
+  background-color: green;
 `;
 
 const ProductContainer1 = styled.section`
@@ -169,7 +155,7 @@ const ProductContainer3 = styled.section`
 `;
 
 const ProductImage = styled.img`
-background-color: green;
+  background-color: green;
 `;
 
 const FooterContainer = styled.footer`
@@ -178,7 +164,19 @@ const FooterContainer = styled.footer`
   background-color: purple;
 `;
 
-
+export function MarqueeItemComponent({ imgUrl, productName, price }) {
+  return (
+    <>
+      <MarqueeItemContainer>
+        <MarqueeProduct>
+          image here
+        </MarqueeProduct>
+        <MarqueeShortText>{productName}</MarqueeShortText>
+        <MarqueePrice>$ {price}</MarqueePrice>
+      </MarqueeItemContainer>
+    </>
+  )
+}
 
 const index = function indexComponent<indexProps>({ }) {
   useEffect(() => {
@@ -191,9 +189,7 @@ const index = function indexComponent<indexProps>({ }) {
     <>
       <NavContainer>
         <NavItems>
-          <ZappConceptsLogoContainer>
-            ZappConcepts
-          </ZappConceptsLogoContainer>
+          <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
         </NavItems>
         <ThreeIconContainer>
           <NavItems>o</NavItems>
@@ -237,19 +233,9 @@ const index = function indexComponent<indexProps>({ }) {
         </ProductContainer>
         <MarqueeContainer>
           <Marquee>
-            <MarqueeItemContainer>
-              <MarqueeProductNameContainer>
-                <ShortText>Yay</ShortText>
-              </MarqueeProductNameContainer>
-              <MarqueePriceContainer>
-                <MarqueePriceText>$ 20</MarqueePriceText>
-              </MarqueePriceContainer>
-              <MarqueeProductImage />
-              {/** 
-              <MarqueeItem>
-              </MarqueeItem>
-               */}
-            </MarqueeItemContainer>
+            <MarqueeItemComponent productName="productName" price="300" />
+            <MarqueeItemComponent productName="productName" price="300" />
+            <MarqueeItemComponent productName="productName" price="300" />
           </Marquee>
         </MarqueeContainer>
         <ProductContainer>
