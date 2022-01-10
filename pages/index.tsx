@@ -19,72 +19,166 @@ interface indexProps { }
  display: flex;
  height: 100px;
  background-color: green;
- `;
- * 
- */
+`;
+* 
+*/
 
-const NavContainer = styled.nav`
-overflow: hidden;
-position: relative;
-display: flex;
-flex: 1;
-background-color: pink;
+const padding = '0.7rem';
+
+const ZappConceptsLogoContainer = styled.div`
+  background-color: yellow;
+  width: 6rem;
 `;
 
-const NavItems = styled.li`
-display: block;
-top: 0;
-left: 0;
-flex: 1;
-background-color: teal;
+const ProductNameContainer = styled.div`
+padding: ${padding};
+width: 10vw;
+min-width: min-content;
+background-color: white;
+`;
+
+const ShortText = styled.p`
+color: blue;
+`;
+
+const PriceContainer = styled.div`
+padding: ${padding};
+width: 17%;
+min-width: min-content;
+background-color:yellowgreen;
+`;
+
+const PriceText = styled.p`
+color: red;
+`;
+
+const MarqueeProductNameContainer = styled.div`
+padding: ${padding};
+width: 10vw;
+min-width: min-content;
+background-color: blue;
+`;
+
+const MarqueePriceNameContainer = styled.div`
+padding: ${padding};
+width: 10vw;
+min-width: min-content;
+background-color: white;
+`;
+
+const MarqueeShortText = styled.p`
+color: blue;
+`;
+
+const MarqueePriceContainer = styled.div`
+padding: ${padding};
+width: 100%;
+min-width: min-content;
+background-color:yellowgreen;
+`;
+
+const MarqueePriceText = styled.p`
+color: red;
+`;
+
+
+const NavContainer = styled.nav`
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex: 1;
+  background-color: pink;
+  vertical-align: baseline;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: ${padding};
+`;
+
+const NavItems = styled.span`
+  
+  width: 2rem;
+  background-color: orange;
+  top: 0;
+  left: 0;
+  flex: 1;
+  background-color: teal;
+`;
+
+const MarqueeItemContainer = styled.div`
+display: flex;
+background-color: lightblue;
+flex-wrap: column;
+height: 80%;
+width: 40%;
+max-height: 80%;
+max-width: 80%;
+`;
+
+const MarqueeItem = styled.div`
+background-color:pink;
+
+`;
+
+const ThreeIconContainer = styled.div`
+display: flex;
+align-items: baseline;
+justify-content: space-between;
 `;
 
 const ProductContainer = styled.div`
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-height: 60vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 60vh;
 `;
 
 const ProductHalfContainer = styled.div`
-display: flex;
-flex-direction: column;
-flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 const MarqueeContainer = styled.section`
-display:flex;
-height: 50vh;
+  display: flex;
+  height: 50vh;
+`;
+
+const MarqueeProductImage = styled.img`
+background-color: green;
 `;
 
 const ProductContainer1 = styled.section`
-background-color: red;
-flex: 1;
-padding: 10px;
-
+  background-color: red;
+  flex: 1;
 `;
 const ProductMiniContainer = styled.section`
-background-color: blue;
-padding: 10px;
-flex: 1 0;
+  background-color: blue;
+  flex: 1 0;
+  height: min-content;
 `;
 
 const ProductMiniContainer2 = styled.section`
-background-color: goldenrod;
-padding: 10px;
-flex: 1 0;
+  background-color: goldenrod;
+  flex: 1 0;
+  height: min-content;
 `;
 
 const ProductContainer3 = styled.section`
-background-color: goldenrod;
-padding: 10px;
+  background-color: goldenrod;
+  padding: ${padding};
+`;
+
+const ProductImage = styled.img`
+background-color: green;
 `;
 
 const FooterContainer = styled.footer`
-// position: absolute;
-// bottom: 0;
-background-color: purple;
+  // position: absolute;
+  // bottom: 0;
+  background-color: purple;
 `;
+
+
 
 const index = function indexComponent<indexProps>({ }) {
   useEffect(() => {
@@ -96,24 +190,66 @@ const index = function indexComponent<indexProps>({ }) {
   return (
     <>
       <NavContainer>
-        <NavItems>w</NavItems>
-        <NavItems>o</NavItems>
-        <NavItems>o</NavItems>
-        <NavItems>t</NavItems>
+        <NavItems>
+          <ZappConceptsLogoContainer>
+            ZappConcepts
+          </ZappConceptsLogoContainer>
+        </NavItems>
+        <ThreeIconContainer>
+          <NavItems>o</NavItems>
+          <NavItems>o</NavItems>
+          <NavItems>t</NavItems>
+        </ThreeIconContainer>
       </NavContainer>
       <main>
         <ProductContainer>
           <ProductHalfContainer>
-            <ProductContainer1>prod1</ProductContainer1>
+            <ProductMiniContainer>
+              <ProductNameContainer>
+                <ShortText>Yay</ShortText>
+              </ProductNameContainer>
+              <PriceContainer>
+                <PriceText>$ 20</PriceText>
+              </PriceContainer>
+              <ProductImage />
+            </ProductMiniContainer>
           </ProductHalfContainer>
           <ProductHalfContainer>
-            <ProductMiniContainer>prod2</ProductMiniContainer>
-            <ProductMiniContainer2>prod3</ProductMiniContainer2>
+            <ProductMiniContainer>
+              <ProductNameContainer>
+                <ShortText>Yay</ShortText>
+              </ProductNameContainer>
+              <PriceContainer>
+                <PriceText>$ 20</PriceText>
+              </PriceContainer>
+              <ProductImage />
+            </ProductMiniContainer>
+            <ProductMiniContainer2>
+              <ProductNameContainer>
+                <ShortText>Yay</ShortText>
+              </ProductNameContainer>
+              <PriceContainer>
+                <PriceText>$ 20</PriceText>
+              </PriceContainer>
+              <ProductImage />
+            </ProductMiniContainer2>
           </ProductHalfContainer>
         </ProductContainer>
         <MarqueeContainer>
           <Marquee>
-            yay
+            <MarqueeItemContainer>
+              <MarqueeProductNameContainer>
+                <ShortText>Yay</ShortText>
+              </MarqueeProductNameContainer>
+              <MarqueePriceContainer>
+                <MarqueePriceText>$ 20</MarqueePriceText>
+              </MarqueePriceContainer>
+              <MarqueeProductImage />
+              {/** 
+              <MarqueeItem>
+              </MarqueeItem>
+               */}
+            </MarqueeItemContainer>
           </Marquee>
         </MarqueeContainer>
         <ProductContainer>
@@ -126,9 +262,7 @@ const index = function indexComponent<indexProps>({ }) {
           </ProductHalfContainer>
         </ProductContainer>
       </main>
-      <FooterContainer>
-        sdfsf
-      </FooterContainer>
+      <FooterContainer>sdfsf</FooterContainer>
     </>
   );
 };
