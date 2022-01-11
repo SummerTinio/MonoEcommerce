@@ -3,14 +3,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface Obj { }
+interface Obj {}
 
 type userAuth = {
-  id: number | null,
-  email: string | null,
-  usernameAuthCopy: string | null,
-  username: Obj[] | null,
-  userId: number | null,
+  id: number | null;
+  email: string | null;
+  usernameAuthCopy: string | null;
+  username: Obj[] | null;
+  userId: number | null;
 };
 
 interface UserAuthState {

@@ -3,16 +3,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface Obj { }
+interface Obj {}
 
 type orderItem = {
-  id: number | null,
-  quantity: number | 0,
-  frozenPrice: number | null,
-  frozenGrandTotalCost: number | null,
-  orderId: number | null,
-  productId: number | null,
-  products: Obj[] | null,
+  id: number | null;
+  quantity: number | 0;
+  frozenPrice: number | null;
+  frozenGrandTotalCost: number | null;
+  orderId: number | null;
+  productId: number | null;
+  products: Obj[] | null;
 };
 
 interface OrderItemState {
@@ -80,4 +80,3 @@ export const selectOrderItem = (state: RootState) => state;
 //.orderItem.user;
 
 export default orderItemSlice.reducer;
-

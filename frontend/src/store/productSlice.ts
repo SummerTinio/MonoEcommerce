@@ -3,18 +3,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface Obj { }
+interface Obj {}
 
 type product = {
-  id: number | null,
-  name: string | null,
-  price: number | null,
-  averageRating: number | null,
-  variablePrice: number | null,
-  dateLastUpdated: string | null,
-  availableQuantity: number | null,
-  reviews: Obj[] | null,
-  orderItems: Obj[] | null,
+  id: number | null;
+  name: string | null;
+  price: number | null;
+  averageRating: number | null;
+  variablePrice: number | null;
+  dateLastUpdated: string | null;
+  availableQuantity: number | null;
+  reviews: Obj[] | null;
+  orderItems: Obj[] | null;
 };
 
 interface ProductState {

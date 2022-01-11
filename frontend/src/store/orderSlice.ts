@@ -2,17 +2,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface Obj { }
+interface Obj {}
 
 type order = {
-  id: number | null,
-  quantity: number | null,
-  frozenPrice: number | null,
-  frozenGrandTotalCost: number | null,
-  orderId: number | null,
-  productId: number | null,
-  products: Obj[] | null, // <-- not a reverse reln, just a reln
-  orders: Obj[] | null, // <-- not a reverse reln, just a reln
+  id: number | null;
+  quantity: number | null;
+  frozenPrice: number | null;
+  frozenGrandTotalCost: number | null;
+  orderId: number | null;
+  productId: number | null;
+  products: Obj[] | null; // <-- not a reverse reln, just a reln
+  orders: Obj[] | null; // <-- not a reverse reln, just a reln
 };
 
 interface OrderState {

@@ -3,15 +3,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-interface Obj { }
+interface Obj {}
 
 type review = {
-  id: number | null,
-  rating: number | null,
-  body: string | null,
-  createdAt: string | null,
-  dateLastUpdated: string | null,
-  numIsHelpful: number | 0,
+  id: number | null;
+  rating: number | null;
+  body: string | null;
+  createdAt: string | null;
+  dateLastUpdated: string | null;
+  numIsHelpful: number | 0;
 };
 
 interface ReviewState {
