@@ -1,0 +1,228 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// This is the Model.
+// It is what allows you to cenforce structure the data in the db.
+
+// 1:1
+// many:many
+// use relns to recreate what mongodb allows us
+// prisma auto
+// 1:1 no need for inbetween table
+// many:many
+// 1:many - prisma creates that in between table for you! without sql.
+// Baked into prisma's relations!
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//model Post {
+//  id        Int     @id @default(autoincrement())
+//  title     String
+//  content   String?
+//  published Boolean @default(false)
+
+//  authorId  Int? // ? means optional
+//  reviewsId Int?
+// for @relation(fields: [use the camelCased modelId],
+// references: [an actual field that exists on postgres, which is just id]
+//                                        -- i.e. id for table] (actual psql field=id)
+//                                        -- not a relation (rel=reviewsId)
+//  author    User? @relation(fields: [authorId], references: [id])
+// reviews   Review? @relation(fields: [reviewsId], references: [id])
+
+// @@map maps current Model name to Postgres naming standards
+//  Review Review[]
+//  @@map(name: "post")
+//}
+
+// Pending Questions:
+// ---> **(1)** What's an attribute? versus a field?
+
+// all starts at pending then branches out
+// shipped ---> fulfilled
+// cancellation requested --> cancelled
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  CANCELLED
+  FULFILLED
+  CANCELLATION_REQUESTED
+}
+
+model Order {
+  // (1) Actual PSQL Fields
+  // the ff. fields exist as is in the Postgres table
+  id               Int         @id @default(autoincrement())
+  //    - if i wanna create reln bet Order-User
+  // - need 2 things
+  // (1) copy of primary key of User user_id
+  // (2) userId Int
+  purchaseDateTime DateTime    @default(now()) @map("purchase_date_time")
+  orderStatus      OrderStatus @default(PENDING) @map("order_status")
+
+
+  // when u create a reln, u have to have an existing field that u reference, and u need the connection
+  userId Int   @map("user_id") // User? @relation(fields: [id], references: [id]) 
+  // see error below? it's asking for the camelCased version of that id
+  user   User? @relation(fields: [userId], references: [id])
+  // (2) Not PSQL Fields -- only Relations (Referential links)
+  // `fieldId` - referential links to specific columns on other Postgres tables
+  // these are NOT fields, i.e. they don't actually exist on the Postgres table as a column
+  // This is syntactic sugar from Prisma to define table relations for you
+  // ---> **(2)** Why is this giving me an error? **(A)** since i didn't indicate `User?`
+
+  // (3) Reverse Relations (Many:One) -- i.e. since we're unable to embed records,
+  // i.e. it is impossible to store more than 1 record in a single row, we need
+  // an in-between table (OrderItem) that collects info from 2 tables, Products and Orders,
+  // such that each Product takes its own row. To get all products for 1 order, we query
+  // the OrderItem table for all Rows (Records) that are a particular orderId, or
+  // alternatively, are from one particular userId
+
+  // Pro's of this SQL approach:
+  // - Less data redundancy
+  // - A single source of truth
+  // - Separation of concerns
+  // - B-tree query index optimizations under the hood (i.e. postgres is developed
+  //   to be performant so as long as you also optimize your queries responsibly)
+
+  // Many Items (multiple rows) : one Order (in 1 collection, signified by array)
+  // items : OrderItem[]
+  items OrderItem[]
+
+  Review   Review? @relation(fields: [reviewId], references: [id])
+  reviewId Int?    @map("review_id")
+  @@map(name: "orders")
+}
+
+// no need for this since reverse relation does this for us (via prisma)
+//model ReviewItem {
+
+//}
+
+// but must declare this table because it contains extra fields NOT on the other Models
+model OrderItem {
+  id                   Int   @id @default(autoincrement())
+  quantity             Int
+  frozenPrice          Float @map("frozen_price")
+  frozenGrandTotalCost Float @map("frozen_grand_total_cost")
+
+  orderId   Int? @map(name: "order_id")
+  productId Int? @map(name: "product_id")
+
+  products Product? @relation(fields: [id], references: [id])
+  // see that error again? it wants camelCased fields, but specifically
+  // for this use case, a field of [id] referencing [id] from the Order model
+  order    Order?   @relation(fields: [orderId], references: [id])
+
+  @@map(name: "order_items")
+}
+
+// product-review fix
+model Product {
+  id                Int      @id @default(autoincrement())
+  name              String
+  price             Float
+  averageRating     Float    @default(0) @map("average_rating")
+  variablePrice     Float    @map("variable_price")
+  dateLastUpdated   DateTime @default(now()) @updatedAt @map("date_last_updated")
+  availableQuantity Int      @map("available_quantity")
+  // tells prisma, "if i ask u to get a product, u can also send me an array of reviews connected to this product"
+  // you ask the product, "do you have any review that is referencing this, connected to you?"
+  reviews           Review[]
+
+  orderItems OrderItem[] // can't @map("order_items") since this is a reln field.
+
+  @@map(name: "products")
+}
+
+enum Role {
+  BUYER
+  SELLER
+}
+
+model User {
+  // id below has to match the datatype from Orders .. when creating relns
+  // the fields ur connecting have to have the same data type
+  // row = single row in excel --
+  // col = same concept
+  // field = id or name or email ... a single cell <--
+  id              Int     @id @default(autoincrement())
+  name            String?
+  username        String? @unique
+  email           String? @unique
+  memberType      Role?   @default(BUYER) @map(name: "member_type")
+  deliveryAddress String? @map(name: "delivery_address")
+
+  // @map maps camelCased fields to actual Postgres-style fields in snake_case
+  // usually for any 2-word+ name/field/reln
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  // user : MultipleRecords[]
+  //  posts   Post[]
+  orders  Order[]
+  reviews Review[]
+
+  UserAuth UserAuth[] // can't @map("user_auth") either since this is a reverse reln (not a field)
+  @@map(name: "users")
+}
+
+model UserAuth {
+  id             Int    @id @default(autoincrement())
+  email          String
+  hashedPassword String @map("hashed_password")
+
+  // when creating a relation, the 2 following lines must come in a pair -- to be connected with
+  usernameAuthCopy String @map("username_auth_copy")
+  username         User?  @relation(fields: [usernameAuthCopy], references: [username])
+  // an existing field (not a relation) on the other model (in this case, existing field is User/username)
+
+  userId Int? @map("user_id")
+}
+
+model Review {
+  id              Int      @id @default(autoincrement())
+  rating          Int?
+  body            String   @unique
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  dateLastUpdated DateTime @updatedAt @map(name: "updated_at")
+  numIsHelpful    Int      @default(autoincrement()) @map(name: "num_is_helpful")
+
+  // this is what creates the in-between table
+
+  // note: types without ? are required
+
+  // cant have posts Array
+  // prisma defines relations for you -- and translates to different db's -- mongo psql
+  // posts Post[]
+
+  // always
+  // (1) creata  a copy of field from other table
+  // (2) create a relation/connection ----> a review needs a post, needs a user, a product
+
+  // see productId Product? @relation(fields: [id], references: [id])?
+  // yes, you can also reference plain 'id's on field even if its the same references: [id]
+  //
+  productId Int     @map("product_id") // <--- simple fields, without any logic IF without a relationship
+  product   Product @relation(fields: [productId], references: [id]) // <---- This!! 
+  // is what makes that field 'strong' i.e. holds meaning
+
+  userId Int  @map("user_id") // <-- add this line to save userId value
+  user   User @relation(fields: [userId], references: [id]) // <-- add this line to create the relationship with it
+
+  // create post id that's an Int... but must be same data type as this
+  postId Int @map("post_id")
+  //  post   Post @relation(fields: [postId], references: [id])
+  // ? optional
+
+  orders Order[]
+
+  @@map(name: "reviews")
+}
