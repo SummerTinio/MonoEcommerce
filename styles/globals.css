@@ -1,3 +1,93 @@
+/** 
+@font-face {
+  font-family: 'monumentExtended';
+  src: url(fonts/MonumentExtended/MonumentExtended-Black.ttf);
+}
+
+@font-face {
+  font-family: 'grandSlang-roman';
+  src: url(fonts/GrandSlang/Grand-Slang-Roman.otf);
+}
+
+@font-face {
+  font-family: 'grandSlang';
+  src: url(fonts/GrandSlang/Grand-Slang-B-Side.otf);
+}
+
+@font-face {
+  font-family: 'grandSlang-italic';
+  src: url(fonts/GrandSlang/Grand-Slang-Italic.otf);
+}
+
+@font-face {
+  font-family: 'sohne';
+  src: url(fonts/Sohne/SohneBreit-Leicht.ttf);
+}
+
+@font-face {
+  font-family: 'sohne-bold';
+  src: url(fonts/Sohne/SohneBreit-Dreiviertelfett.ttf);
+}
+
+@font-face {
+  font-family: 'gtAmerica-bold';
+  src: url(fonts/GTAmerica/GT-America-Expanded-Bold.otf);
+}
+
+@font-face {
+  font-family: 'gtAmerica';
+  src: url(fonts/GTAmerica/GT-America-Expanded-Regular.otf);
+}
+ */
+
+@font-face {
+  font-family: 'caslonDoricLight';
+  src: url(/fonts/CaslonDoric/CaslonDoric-Light.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'caslonDoricRegular';
+  src: url(/fonts/CaslonDoric/CaslonDoric-Regular.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'caslonDoricMedium';
+  src: url(/fonts/CaslonDoric/CaslonDoric-Medium.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CaslonDoricLightItalic';
+  src: url(/fonts/CaslonDoric/CaslonDoric-LightItalic.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CaslonDoricRegularItalic';
+  src: url(/fonts/CaslonDoric/CaslonDoric-RegularItalic.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'caslonDoricMediumItalic';
+  src: url(/fonts/CaslonDoric/CaslonDoric-MediumItalic.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 /* Box sizing rules */
 *,
 *::before,
@@ -72,3 +162,13 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+/** 
+*,
+html,
+body {
+  outline: black !important;
+  font-family: caslonDoricRegular !important;
+  background-color: white !important;
+}
+*/
