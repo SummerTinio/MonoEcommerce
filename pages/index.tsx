@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { NextPageContext } from 'next';
 import axios from 'axios';
+import Head from 'next/head';
+import Link from 'next/link';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -8,10 +10,17 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import SignInComponent from '../frontend/src/views/signInPage/SignInPage';
 
+import commerce from '../lib/commerce';
 import Marquee from 'react-fast-marquee';
 import StyledButton from '../frontend/src/components/StyledButton';
 import NavBar from '../frontend/src/views/app/NavBar';
 import styled from 'styled-components';
+
+import { useAppSelector, useAppDispatch } from '../frontend/src/hooks';
+import { setProductList } from '../frontend/src/store/productListSlice';
+/** @ts-ignore */
+// import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
+
 interface indexProps { }
 
 /** 
@@ -23,7 +32,8 @@ interface indexProps { }
 * 
 */
 
-const padding = '0.7rem';
+// const padding = '0.7rem';
+const padding = '0';
 
 const ZappConceptsLogoContainer = styled.div`
   background-color: yellow;
@@ -48,9 +58,7 @@ const PriceContainer = styled.div`
   background-color: yellowgreen;
 `;
 
-const PriceText = styled.p`
-  color: red;
-`;
+const PriceText = styled.p``;
 
 const MarqueeProductNameContainer = styled.div`
   padding: ${padding};
@@ -58,7 +66,6 @@ const MarqueeProductNameContainer = styled.div`
   min-width: min-content;
   background-color: blue;
 `;
-
 
 const NavContainer = styled.nav`
   overflow: hidden;
@@ -83,6 +90,7 @@ const NavItems = styled.span`
 
 const MarqueeItemContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   background-color: lightblue;
   flex-direction: column;
   height: 80%;
@@ -92,18 +100,17 @@ const MarqueeItemContainer = styled.div`
 `;
 
 const MarqueeProduct = styled.span`
-flex: 1;
-background-color: yellowgreen;
+  flex: 1;
+  background-color: yellowgreen;
 `;
 
 const MarqueeShortText = styled.span`
-background-color: blue;
+  background-color: blue;
 `;
 
 const MarqueePrice = styled.span`
-background-color: green;
+  background-color: green;
 `;
-
 
 const ThreeIconContainer = styled.div`
   display: flex;
@@ -122,6 +129,11 @@ const ProductHalfContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+`;
+
+const MarqueeFlexContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
 
 const MarqueeContainer = styled.section`
@@ -143,8 +155,16 @@ const ProductMiniContainer = styled.section`
   height: min-content;
 `;
 
+// TODO: delete this later. just a variant so i can see
+// the colors and divs on the screen as i create
 const ProductMiniContainer2 = styled.section`
-  background-color: goldenrod;
+  background-color: salmon;
+  flex: 1 0;
+  height: min-content;
+`;
+
+const ProductMiniContainer3 = styled.section`
+  background-color: slategray;
   flex: 1 0;
   height: min-content;
 `;
@@ -162,31 +182,157 @@ const FooterContainer = styled.footer`
   // position: absolute;
   // bottom: 0;
   background-color: purple;
+  height: 6rem;
 `;
 
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
     <>
       <MarqueeItemContainer>
-        <MarqueeProduct>
-          image here
-        </MarqueeProduct>
+        <MarqueeProduct>image here</MarqueeProduct>
         <MarqueeShortText>{productName}</MarqueeShortText>
         <MarqueePrice>$ {price}</MarqueePrice>
       </MarqueeItemContainer>
     </>
-  )
+  );
 }
 
-const index = function indexComponent<indexProps>({ }) {
-  useEffect(() => {
+interface ProductInfo {
+  imgUrl: string;
+  productName: string;
+  price: number;
+}
+
+export interface ICommerceJSProductPayload {
+  id: string;
+  created: string;
+  updated: string;
+  active: boolean;
+  permalink: null | string;
+  name: string;
+  description: string;
+  price: {
+    raw: number;
+    formatted: number;
+    formatted_with_symbol: string;
+    formatted_with_code: string;
+  };
+}
+
+export function SingleProductCardComponent({
+  name,
+  description,
+  price,
+}: ICommerceJSProductPayload) {
+  return (
+    <>
+      <ProductMiniContainer>
+        <ProductNameContainer>
+          <ShortText>{name}</ShortText>
+        </ProductNameContainer>
+        <PriceContainer>
+          <PriceText>{price}</PriceText>
+        </PriceContainer>
+        <ProductImage />
+      </ProductMiniContainer>
+    </>
+  );
+}
+
+export function ProductContainerComponent(
+  products: ICommerceJSProductPayload[],
+  top: boolean,
+) {
+  let container;
+  if (top === true) {
+    container = (
+      <ProductContainer>
+        <ProductHalfContainer>
+          <SingleProductCardComponent />
+        </ProductHalfContainer>
+        <ProductHalfContainer>
+          <SingleProductCardComponent />
+          <SingleProductCardComponent />
+        </ProductHalfContainer>
+      </ProductContainer>
+    );
+  } else {
+    container = (
+      <ProductContainer>
+        <ProductHalfContainer>
+          <SingleProductCardComponent />
+          <SingleProductCardComponent />
+        </ProductHalfContainer>
+        <ProductHalfContainer>
+          <SingleProductCardComponent />
+        </ProductHalfContainer>
+      </ProductContainer>
+    );
+  }
+  return <>{container}</>;
+}
+
+const index = function indexComponent<indexProps>({
+  merchant,
+  categories,
+  products,
+}) {
+  const productsArray = useAppSelector(
+    (state) => state.productList.productList,
+  );
+  const dispatch = useAppDispatch();
+  useEffect(async () => {
     console.log('its working!');
+    // const res = await axios.get('https://jsonplaceholder.typicode.com/todos')
+    // console.log(res.data);
+    console.log(merchant, categories, products);
   }, []);
+
+  useEffect(() => {
+    dispatch(setProductList(products));
+  }, [products]);
 
   const text = `you're at the / page sdasfsda!`;
 
   return (
     <>
+      <Head>
+        <link
+          rel="preload"
+          href="/fonts/CaslonDoric/CaslonDoricRegular.otf"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/CaslonDoric/CaslonDoric-Medium.otf"
+          as="font"
+          crossOrigin=""
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/PixiPlugin.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/EasePack.min.js"></script>
+        {/** 
+  
+          <!--
+          DrawSVGPlugin.min.js, MorphSVGPlugin.min.js, and SplitText.min.js are Club GreenSock perks which are not available on a CDN. Download them from your GreenSock account and include them locally like this:
+  
+          <script src="/[YOUR_DIRECTORY]/DrawSVGPlugin.min.js"></script>
+          <script src="/[YOUR_DIRECTORY]/MorphSVGPlugin.min.js"></script>
+          <script src="/[YOUR_DIRECTORY]/SplitText.min.js"></script>
+  
+          Sign up at https://greensock.com/club or try them for free on CodePen or CodeSandbox
+          -->
+            */}
+      </Head>
+      {/** 
+      <pre>{JSON.stringify(merchant, null, 2)}</pre>
+      <pre>{JSON.stringify(categories, null, 2)}</pre>
+       * 
+       */}
+      <pre>{JSON.stringify(products, null, 2)}</pre>
       <NavContainer>
         <NavItems>
           <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
@@ -198,59 +344,45 @@ const index = function indexComponent<indexProps>({ }) {
         </ThreeIconContainer>
       </NavContainer>
       <main>
-        <ProductContainer>
-          <ProductHalfContainer>
-            <ProductMiniContainer>
-              <ProductNameContainer>
-                <ShortText>Yay</ShortText>
-              </ProductNameContainer>
-              <PriceContainer>
-                <PriceText>$ 20</PriceText>
-              </PriceContainer>
-              <ProductImage />
-            </ProductMiniContainer>
-          </ProductHalfContainer>
-          <ProductHalfContainer>
-            <ProductMiniContainer>
-              <ProductNameContainer>
-                <ShortText>Yay</ShortText>
-              </ProductNameContainer>
-              <PriceContainer>
-                <PriceText>$ 20</PriceText>
-              </PriceContainer>
-              <ProductImage />
-            </ProductMiniContainer>
-            <ProductMiniContainer2>
-              <ProductNameContainer>
-                <ShortText>Yay</ShortText>
-              </ProductNameContainer>
-              <PriceContainer>
-                <PriceText>$ 20</PriceText>
-              </PriceContainer>
-              <ProductImage />
-            </ProductMiniContainer2>
-          </ProductHalfContainer>
-        </ProductContainer>
+        {ProductContainerComponent(products, true)}
         <MarqueeContainer>
           <Marquee>
-            <MarqueeItemComponent productName="productName" price="300" />
-            <MarqueeItemComponent productName="productName" price="300" />
-            <MarqueeItemComponent productName="productName" price="300" />
+            <MarqueeItemComponent
+              productName="productName"
+              price="300"
+              imgUrl={undefined}
+            />
+            <MarqueeItemComponent
+              productName="productName"
+              price="300"
+              imgUrl={undefined}
+            />
+            <MarqueeItemComponent
+              productName="productName"
+              price="300"
+              imgUrl={undefined}
+            />
           </Marquee>
         </MarqueeContainer>
-        <ProductContainer>
-          <ProductHalfContainer>
-            <ProductMiniContainer>prod2</ProductMiniContainer>
-            <ProductMiniContainer2>prod3</ProductMiniContainer2>
-          </ProductHalfContainer>
-          <ProductHalfContainer>
-            <ProductContainer1>prod1</ProductContainer1>
-          </ProductHalfContainer>
-        </ProductContainer>
+        {ProductContainerComponent(products, false)}
       </main>
       <FooterContainer>sdfsf</FooterContainer>
     </>
   );
 };
+
+export async function getServerSideProps() {
+  const merchant = await commerce.merchants.about();
+  const { data: categories } = await commerce.categories.list();
+  const { data: products } = await commerce.products.list();
+
+  return {
+    props: {
+      merchant,
+      categories,
+      products,
+    },
+  };
+}
 
 export default index;
