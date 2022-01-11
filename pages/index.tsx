@@ -21,7 +21,7 @@ import { setProductList } from '../frontend/src/store/productListSlice';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps {}
+interface indexProps { }
 
 /** 
  const NavContainer = styled.nav`
@@ -231,13 +231,51 @@ export function SingleProductCardComponent({
           <ShortText>{name}</ShortText>
         </ProductNameContainer>
         <PriceContainer>
-          <PriceText>{price}</PriceText>
+          <PriceText>{price.formatted_with_symbol}</PriceText>
         </PriceContainer>
         <ProductImage />
       </ProductMiniContainer>
     </>
   );
 }
+
+const ProductsListNextLinkLi = styled.li`
+margin: 0;
+padding: 0;
+`;
+
+const NextLinkAnchorTag = styled.a`
+
+`;
+
+export function Product({ name, price }: ICommerceJSProductPayload) {
+  return (
+    <>
+      {name}: {price.formatted_with_symbol}
+    </>
+  )
+}
+
+
+export function ProductsListComponent(products: ICommerceJSProductPayload[]) {
+  if (!products) return null;
+  return (
+    <>
+      {
+        products.map((product) => {
+          <ProductsListNextLinkLi key={product.permalink}>
+            <Link href={`/products/${product.permalink}`}>
+              <NextLinkAnchorTag>
+                <Product {...product} />
+              </NextLinkAnchorTag>
+            </Link>
+          </ProductsListNextLinkLi>
+        })
+      }
+    </>
+  )
+}
+
 
 export function ProductContainerComponent(
   products: ICommerceJSProductPayload[],
