@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { NextPageContext } from 'next';
 import axios from 'axios';
-import Head from 'next/head';
-import Link from 'next/link';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -10,14 +8,11 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import SignInComponent from '../frontend/src/views/signInPage/SignInPage';
 
-import commerce from '../lib/commerce';
 import Marquee from 'react-fast-marquee';
 import StyledButton from '../frontend/src/components/StyledButton';
 import NavBar from '../frontend/src/views/app/NavBar';
 import styled from 'styled-components';
 
-import { useAppSelector, useAppDispatch } from '../frontend/src/hooks';
-import { setProductList } from '../frontend/src/store/productListSlice';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
@@ -58,7 +53,9 @@ const PriceContainer = styled.div`
   background-color: yellowgreen;
 `;
 
-const PriceText = styled.p``;
+const PriceText = styled.p`
+  color: red;
+`;
 
 const MarqueeProductNameContainer = styled.div`
   padding: ${padding};
@@ -149,6 +146,7 @@ const ProductContainer1 = styled.section`
   background-color: red;
   flex: 1;
 `;
+
 const ProductMiniContainer = styled.section`
   background-color: blue;
   flex: 1 0;
@@ -203,35 +201,22 @@ interface ProductInfo {
   price: number;
 }
 
-export interface ICommerceJSProductPayload {
-  id: string;
-  created: string;
-  updated: string;
-  active: boolean;
-  permalink: null | string;
-  name: string;
-  description: string;
-  price: {
-    raw: number;
-    formatted: number;
-    formatted_with_symbol: string;
-    formatted_with_code: string;
-  };
-}
+import React from 'react';
+import Head from 'next/head';
 
 export function SingleProductCardComponent({
-  name,
-  description,
+  imgUrl,
+  productName,
   price,
-}: ICommerceJSProductPayload) {
+}: ProductInfo) {
   return (
     <>
       <ProductMiniContainer>
         <ProductNameContainer>
-          <ShortText>{name}</ShortText>
+          <ShortText>{productName}</ShortText>
         </ProductNameContainer>
         <PriceContainer>
-          <PriceText>{price}</PriceText>
+          <PriceText>$ {price}</PriceText>
         </PriceContainer>
         <ProductImage />
       </ProductMiniContainer>
@@ -240,7 +225,7 @@ export function SingleProductCardComponent({
 }
 
 export function ProductContainerComponent(
-  products: ICommerceJSProductPayload[],
+  productsArray: ProductInfo[],
   top: boolean,
 ) {
   let container;
@@ -248,11 +233,23 @@ export function ProductContainerComponent(
     container = (
       <ProductContainer>
         <ProductHalfContainer>
-          <SingleProductCardComponent />
+          <SingleProductCardComponent
+            productName={productsArray[0].productName}
+            price={productsArray[0].price}
+            imgUrl={productsArray[0].imgUrl}
+          />
         </ProductHalfContainer>
         <ProductHalfContainer>
-          <SingleProductCardComponent />
-          <SingleProductCardComponent />
+          <SingleProductCardComponent
+            productName={productsArray[1].productName}
+            price={productsArray[1].price}
+            imgUrl={productsArray[1].imgUrl}
+          />
+          <SingleProductCardComponent
+            productName={productsArray[2].productName}
+            price={productsArray[2].price}
+            imgUrl={productsArray[2].imgUrl}
+          />
         </ProductHalfContainer>
       </ProductContainer>
     );
@@ -260,11 +257,23 @@ export function ProductContainerComponent(
     container = (
       <ProductContainer>
         <ProductHalfContainer>
-          <SingleProductCardComponent />
-          <SingleProductCardComponent />
+          <SingleProductCardComponent
+            productName={productsArray[1].productName}
+            price={productsArray[1].price}
+            imgUrl={productsArray[1].imgUrl}
+          />
+          <SingleProductCardComponent
+            productName={productsArray[2].productName}
+            price={productsArray[2].price}
+            imgUrl={productsArray[2].imgUrl}
+          />
         </ProductHalfContainer>
         <ProductHalfContainer>
-          <SingleProductCardComponent />
+          <SingleProductCardComponent
+            productName={productsArray[0].productName}
+            price={productsArray[0].price}
+            imgUrl={productsArray[0].imgUrl}
+          />
         </ProductHalfContainer>
       </ProductContainer>
     );
@@ -272,25 +281,12 @@ export function ProductContainerComponent(
   return <>{container}</>;
 }
 
-const index = function indexComponent<indexProps>({
-  merchant,
-  categories,
-  products,
-}) {
-  const productsArray = useAppSelector(
-    (state) => state.productList.productList,
-  );
-  const dispatch = useAppDispatch();
+const index = function indexComponent<indexProps>({}) {
   useEffect(async () => {
     console.log('its working!');
-    // const res = await axios.get('https://jsonplaceholder.typicode.com/todos')
-    // console.log(res.data);
-    console.log(merchant, categories, products);
+    const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
+    console.log(res.data);
   }, []);
-
-  useEffect(() => {
-    dispatch(setProductList(products));
-  }, [products]);
 
   const text = `you're at the / page sdasfsda!`;
 
@@ -299,7 +295,7 @@ const index = function indexComponent<indexProps>({
       <Head>
         <link
           rel="preload"
-          href="/fonts/CaslonDoric/CaslonDoricRegular.otf"
+          href="/fonts/CaslonDoric/CaslonDoric-Regular.otf"
           as="font"
           crossOrigin=""
         />
@@ -309,30 +305,7 @@ const index = function indexComponent<indexProps>({
           as="font"
           crossOrigin=""
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/PixiPlugin.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/EasePack.min.js"></script>
-        {/** 
-  
-          <!--
-          DrawSVGPlugin.min.js, MorphSVGPlugin.min.js, and SplitText.min.js are Club GreenSock perks which are not available on a CDN. Download them from your GreenSock account and include them locally like this:
-  
-          <script src="/[YOUR_DIRECTORY]/DrawSVGPlugin.min.js"></script>
-          <script src="/[YOUR_DIRECTORY]/MorphSVGPlugin.min.js"></script>
-          <script src="/[YOUR_DIRECTORY]/SplitText.min.js"></script>
-  
-          Sign up at https://greensock.com/club or try them for free on CodePen or CodeSandbox
-          -->
-            */}
       </Head>
-      {/** 
-      <pre>{JSON.stringify(merchant, null, 2)}</pre>
-      <pre>{JSON.stringify(categories, null, 2)}</pre>
-       * 
-       */}
-      <pre>{JSON.stringify(products, null, 2)}</pre>
       <NavContainer>
         <NavItems>
           <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
@@ -344,7 +317,14 @@ const index = function indexComponent<indexProps>({
         </ThreeIconContainer>
       </NavContainer>
       <main>
-        {ProductContainerComponent(products, true)}
+        {ProductContainerComponent(
+          [
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+          ],
+          true,
+        )}
         <MarqueeContainer>
           <Marquee>
             <MarqueeItemComponent
@@ -364,25 +344,18 @@ const index = function indexComponent<indexProps>({
             />
           </Marquee>
         </MarqueeContainer>
-        {ProductContainerComponent(products, false)}
+        {ProductContainerComponent(
+          [
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+            { productName: 'skee', price: 200, imgUrl: 'skeeng' },
+          ],
+          false,
+        )}
       </main>
       <FooterContainer>sdfsf</FooterContainer>
     </>
   );
 };
-
-export async function getServerSideProps() {
-  const merchant = await commerce.merchants.about();
-  const { data: categories } = await commerce.categories.list();
-  const { data: products } = await commerce.products.list();
-
-  return {
-    props: {
-      merchant,
-      categories,
-      products,
-    },
-  };
-}
 
 export default index;

@@ -6,9 +6,9 @@ import theme from '../styles/theme';
 import { NextPageContext } from 'next';
 import { style } from '@mui/system';
 
-interface MyDocumentProps { }
+interface MyDocumentProps {}
 
-const MyDocument = function MyDocumentComponent<MyDocumentProps>({ }) {
+const MyDocument = function MyDocumentComponent<MyDocumentProps>({}) {
   return (
     <>
       <Html lang="en">
