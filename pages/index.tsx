@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import Script from 'next/script';
 import { NextPageContext } from 'next';
 import axios from 'axios';
 import Head from 'next/head';
@@ -18,10 +19,11 @@ import styled from 'styled-components';
 
 import { useAppSelector, useAppDispatch } from '../frontend/src/hooks';
 import { setProductList } from '../frontend/src/store/productListSlice';
+import { NextPage } from 'next/types';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps { }
+interface indexProps {}
 
 /** 
  const NavContainer = styled.nav`
@@ -231,7 +233,7 @@ export function SingleProductCardComponent({
           <ShortText>{name}</ShortText>
         </ProductNameContainer>
         <PriceContainer>
-          <PriceText>{price.formatted_with_symbol}</PriceText>
+          <PriceText>{price?.formatted_with_symbol}</PriceText>
         </PriceContainer>
         <ProductImage />
       </ProductMiniContainer>
@@ -240,42 +242,66 @@ export function SingleProductCardComponent({
 }
 
 const ProductsListNextLinkLi = styled.li`
-margin: 0;
-padding: 0;
+  margin: 0;
+  padding: 0;
 `;
 
-const NextLinkAnchorTag = styled.a`
-
-`;
+const NextLinkAnchorTag = styled.a``;
 
 export function Product({ name, price }: ICommerceJSProductPayload) {
   return (
     <>
       {name}: {price.formatted_with_symbol}
     </>
-  )
+  );
 }
-
 
 export function ProductsListComponent(products: ICommerceJSProductPayload[]) {
   if (!products) return null;
   return (
     <>
-      {
-        products.map((product) => {
-          <ProductsListNextLinkLi key={product.permalink}>
-            <Link href={`/products/${product.permalink}`}>
-              <NextLinkAnchorTag>
-                <Product {...product} />
-              </NextLinkAnchorTag>
-            </Link>
-          </ProductsListNextLinkLi>
-        })
-      }
+      {products.map((product) => {
+        <ProductsListNextLinkLi key={product.permalink}>
+          <Link href={`/products/${product.permalink}`}>
+            <NextLinkAnchorTag>
+              <Product {...product} />
+            </NextLinkAnchorTag>
+          </Link>
+        </ProductsListNextLinkLi>;
+      })}
     </>
-  )
+  );
 }
 
+type DisplayProductsProps = {
+  products?: ICommerceJSProductPayload[];
+};
+
+const ProductsGrid = styled('div')`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+`;
+
+const ProductGridItem = styled('div')`
+  padding: 2rem;
+`;
+
+const DisplayProducts = (props: DisplayProductsProps) => {
+  const { products } = props;
+  console.log('products', products);
+  if (!products) return null;
+
+  return (
+    <ProductsGrid>
+      {products.map((product) => {
+        return (
+          <ProductGridItem key={product.id}>{product.name}</ProductGridItem>
+        );
+      })}
+    </ProductsGrid>
+  );
+};
 
 export function ProductContainerComponent(
   products: ICommerceJSProductPayload[],
@@ -310,7 +336,7 @@ export function ProductContainerComponent(
   return <>{container}</>;
 }
 
-const index = function indexComponent<indexProps>({
+const index: NextPage = function indexComponent<indexProps>({
   merchant,
   categories,
   products,
@@ -347,12 +373,13 @@ const index = function indexComponent<indexProps>({
           as="font"
           crossOrigin=""
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/PixiPlugin.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/EasePack.min.js"></script>
-        {/** 
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></Script>
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></Script>
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/MotionPathPlugin.min.js"></Script>
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/PixiPlugin.min.js"></Script>
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/EasePack.min.js"></Script>
+      </Head>
+      {/** 
   
           <!--
           DrawSVGPlugin.min.js, MorphSVGPlugin.min.js, and SplitText.min.js are Club GreenSock perks which are not available on a CDN. Download them from your GreenSock account and include them locally like this:
@@ -364,7 +391,6 @@ const index = function indexComponent<indexProps>({
           Sign up at https://greensock.com/club or try them for free on CodePen or CodeSandbox
           -->
             */}
-      </Head>
       {/** 
       <pre>{JSON.stringify(merchant, null, 2)}</pre>
       <pre>{JSON.stringify(categories, null, 2)}</pre>
@@ -383,6 +409,7 @@ const index = function indexComponent<indexProps>({
       </NavContainer>
       <main>
         {ProductContainerComponent(products, true)}
+        <DisplayProducts products={products} />
         <MarqueeContainer>
           <Marquee>
             <MarqueeItemComponent
