@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// This is the Model.
+// It is what allows you to cenforce structure the data in the db.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+
+  authorId  Int? // ? means optional
+  reviewsId Int?
+  // for @relation(fields: [use the camelCased modelId],
+  // references: [an actual field that exists on postgres, which is just id]
+  //                                        -- i.e. id for table] (actual psql field=id)
+  //                                        -- not a relation (rel=reviewsId)
+  author    User?   @relation(fields: [authorId], references: [id])
+  reviews   Review? @relation(fields: [reviewsId], references: [id])
+
+  // @@map maps current Model name to Postgres naming standards
+  @@map(name: "post")
+}
+
+// Pending Questions:
+// ---> **(1)** What's an attribute? versus a field?
+
+model Order {
+  // (1) Actual PSQL Fields
+  // the ff. fields exist as is in the Postgres table
+  id   Int   @id @default(autoincrement())
+  // see error below? it's asking for the camelCased version of that id
+  user User? @relation(fields: [user_id], references: [id])
+
+  // (2) Not PSQL Fields -- only Relations (Referential links)
+  // `fieldId` - referential links to specific columns on other Postgres tables
+  // these are NOT fields, i.e. they don't actually exist on the Postgres table as a column
+  // This is syntactic sugar from Prisma to define table relations for you
+
+  // ---> **(2)** Why is this giving me an error? **(A)** since i didn't indicate `User?`
+  userId User? @relation(fields: [userId], references: [id])
+
+  // (3) Reverse Relations (Many:One) -- i.e. since we're unable to embed records,
+  // i.e. it is impossible to store more than 1 record in a single row, we need
+  // an in-between table (OrderItem) that collects info from 2 tables, Products and Orders,
+  // such that each Product takes its own row. To get all products for 1 order, we query
+  // the OrderItem table for all Rows (Records) that are a particular orderId, or
+  // alternatively, are from one particular userId
+
+  // Pro's of this SQL approach:
+  // - Less data redundancy
+  // - A single source of truth
+  // - Separation of concerns
+  // - B-tree query index optimizations under the hood (i.e. postgres is developed
+  //   to be performant so as long as you also optimize your queries responsibly)
+
+  // Many Items (multiple rows) : one Order (in 1 collection, signified by array)
+  // items : OrderItem[]
+  items OrderItem[]
+
+  @@map(name: "order")
+}
+
+model ReviewItem {
+
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  quantity Int
+  price    Float
+
+  orderId   Int? @map(name: "order_id")
+  productId Int? @map(name: "product_id")
+
+  products Product? @relation(fields: [id], references: [id])
+  // see that error again? it wants camelCased fields, but specifically
+  // for this use case, a field of [id] referencing [id] from the Order model
+  order    Order?   @relation(fields: [order_id], references: [id])
+
+  @@map(name: "order_item")
+}
+
+model Product {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Float
+
+  orderItems OrderItem[]
+
+  @@map(name: "product")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  email String? @unique
+
+  // @map maps camelCased fields to actual Postgres-style fields in snake_case
+  // usually for any 2-word+ name/field/reln
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  // user : MultipleRecords[]
+  posts   Post[]
+  orders  Order[]
+  reviews Review[]
+
+  @@map(name: "user")
+}
+
+model Review {
+  id              Int      @id @default(autoincrement())
+  rating          Int?
+  body            String?  @unique
+  createdAt       DateTime @default(now()) @map(name: "created_at")
+  dateLastUpdated DateTime @updatedAt @map(name: "updated_at")
+  numIsHelpful    Int      @default(autoincrement()) @map(name: "num_is_helpful")
+
+  // see productId Product? @relation(fields: [id], references: [id])?
+  // yes, you can also reference plain 'id's on field even if its the same references: [id]
+  productId Product? @relation(fields: [id], references: [id])
+  userId    User?    @relation(fields: [id], references: [id])
+
+  orders Order[]
+
+  @@map(name: "review")
+}
