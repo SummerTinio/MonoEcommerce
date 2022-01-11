@@ -1,3 +1,18 @@
+...tasks_todos
+not-part-of-this-proj
+1-fe-testing
+2-pending
+framework
+styles
+dotdot.env
+playground**
+test.d.ts
+serverr
+.env
+frontend/src/store/actions
+frontend/src/store/reducers
+autoRestfulPrisma
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

@@ -1,5 +1,5 @@
 import express from 'express';
-import getEventsRoutes from './events';
+import getEventsRoutes from './api/events';
 
 export default function getRoutes() {
   const router = express.Router();
