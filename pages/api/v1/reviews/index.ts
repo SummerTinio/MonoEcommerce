@@ -6,10 +6,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const query = req.query; // ---> on http://localhost:3000/api/v1/orders?hello=helladssadas , console logs hello=hellasdasdad
+  const query = req.query; // ---> on http://localhost:3000/api/v1/reviews?hello=helladssadas , console logs hello=hellasdasdad
   console.log(query);
-  const orders = await prisma.order.findMany();
-  return res.json(orders);
+  const reviews = await prisma.review.findMany();
+  return res.json(reviews);
   // SELECT *
   // const query = await prisma.product.findMany();
 
