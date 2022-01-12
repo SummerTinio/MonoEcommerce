@@ -182,6 +182,10 @@ body {
   --ERROR: #bfbfbf;
 }
 
+body {
+  margin: 0.5rem !important;
+}
+
 *,
 html,
 body {
