@@ -282,10 +282,13 @@ export function ProductContainerComponent(
 }
 
 const index = function indexComponent<indexProps>({}) {
-  useEffect(async () => {
+  async function init() {
+    return await axios.get('https://jsonplaceholder.typicode.com/todos');
+  }
+  useEffect(() => {
+    const res = init();
     console.log('its working!');
-    const res = await axios.get('https://jsonplaceholder.typicode.com/todos');
-    console.log(res.data);
+    console.log(res?.data);
   }, []);
 
   const text = `you're at the / page sdasfsda!`;
