@@ -23,7 +23,7 @@ import { NextPage } from 'next/types';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps {}
+interface indexProps { }
 
 /** 
  const NavContainer = styled.nav`
@@ -39,7 +39,7 @@ const padding = '0';
 
 const ZappConceptsLogoContainer = styled.div`
   background-color: yellow;
-  width: 6rem;
+  width: min-content;
 `;
 
 const ProductNameContainer = styled.div`
@@ -70,6 +70,8 @@ const MarqueeProductNameContainer = styled.div`
 `;
 
 const NavContainer = styled.nav`
+  margin: 0.4rem 1rem 0 1rem;
+  border-bottom: 0.5px solid;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -82,7 +84,8 @@ const NavContainer = styled.nav`
 `;
 
 const NavItems = styled.span`
-  width: 2rem;
+  width: min-content;
+  padding: 1rem;
   background-color: orange;
   top: 0;
   left: 0;
@@ -187,6 +190,41 @@ const FooterContainer = styled.footer`
   height: 6rem;
 `;
 
+const LandingPageVideoContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: .15;
+  overflow: hidden;
+`;
+
+const LandingPageVideo = styled.video`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+`;
+
+interface IVideoProps {
+  noExtFileName: string,
+  format?: string,
+}
+
+export function VideoComponent({ noExtFileName, format }: IVideoProps) {
+  const src = `/img/${noExtFileName}.${format}`;
+  const type = `video/${format}`;
+  return (
+    <LandingPageVideoContainer>
+      <LandingPageVideo autoplay playsinline loop>
+        <source src={src} type={type} />
+      </LandingPageVideo>
+    </LandingPageVideoContainer>
+  )
+}
+
+
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
     <>
@@ -277,13 +315,13 @@ type DisplayProductsProps = {
   products?: ICommerceJSProductPayload[];
 };
 
-const ProductsGrid = styled('div')`
+const ProductsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 `;
 
-const ProductGridItem = styled('div')`
+const ProductGridItem = styled.div`
   padding: 2rem;
 `;
 
@@ -296,7 +334,17 @@ const DisplayProducts = (props: DisplayProductsProps) => {
     <ProductsGrid>
       {products.map((product) => {
         return (
-          <ProductGridItem key={product.id}>{product.name}</ProductGridItem>
+          <ProductGridItem key={product.id}>
+            {product.name}
+            {product.price.formatted_with_symbol}
+            <Link href={product.checkout_url.display}>
+              <a>About this Product</a>
+            </Link>
+            <Link href={product.checkout_url.checkout}>
+              <a>Buy Now</a>
+            </Link>
+          </ProductGridItem>
+
         );
       })}
     </ProductsGrid>
@@ -363,7 +411,13 @@ const index: NextPage = function indexComponent<indexProps>({
       <Head>
         <link
           rel="preload"
-          href="/fonts/CaslonDoric/CaslonDoricRegular.otf"
+          href="/fonts/CaslonDoric/CaslonDoric-Light.otf"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/CaslonDoric/CaslonDoric-Regular.otf"
           as="font"
           crossOrigin=""
         />
@@ -396,41 +450,47 @@ const index: NextPage = function indexComponent<indexProps>({
       <pre>{JSON.stringify(categories, null, 2)}</pre>
        * 
        */}
-      <pre>{JSON.stringify(products, null, 2)}</pre>
       <NavContainer>
         <NavItems>
           <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
         </NavItems>
         <ThreeIconContainer>
-          <NavItems>o</NavItems>
-          <NavItems>o</NavItems>
-          <NavItems>t</NavItems>
+          <NavItems>Home</NavItems>
+          <NavItems>User</NavItems>
+          <NavItems>Cart</NavItems>
         </ThreeIconContainer>
       </NavContainer>
       <main>
-        {ProductContainerComponent(products, true)}
+        <VideoComponent noExtFileName="impact" format="mp4" />
+        {
+          /** 
+           {ProductContainerComponent(products, true)}
+           * 
+           <MarqueeContainer>
+             <Marquee>
+               <MarqueeItemComponent
+                 productName="productName"
+                 price="300"
+                 imgUrl={undefined}
+               />
+               <MarqueeItemComponent
+                 productName="productName"
+                 price="300"
+                 imgUrl={undefined}
+               />
+               <MarqueeItemComponent
+                 productName="productName"
+                 price="300"
+                 imgUrl={undefined}
+               />
+             </Marquee>
+           </MarqueeContainer>
+           {ProductContainerComponent(products, false)}
+           */
+        }
         <DisplayProducts products={products} />
-        <MarqueeContainer>
-          <Marquee>
-            <MarqueeItemComponent
-              productName="productName"
-              price="300"
-              imgUrl={undefined}
-            />
-            <MarqueeItemComponent
-              productName="productName"
-              price="300"
-              imgUrl={undefined}
-            />
-            <MarqueeItemComponent
-              productName="productName"
-              price="300"
-              imgUrl={undefined}
-            />
-          </Marquee>
-        </MarqueeContainer>
-        {ProductContainerComponent(products, false)}
       </main>
+      <pre>{JSON.stringify(products, null, 2)}</pre>
       <FooterContainer>sdfsf</FooterContainer>
     </>
   );
