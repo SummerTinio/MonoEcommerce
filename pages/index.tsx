@@ -4,6 +4,7 @@ import { NextPageContext } from 'next';
 import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -20,7 +21,7 @@ import { NextPage } from 'next/types';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps { }
+interface indexProps {}
 
 /** 
  const NavContainer = styled.nav`
@@ -49,7 +50,7 @@ const ProductNameContainer = styled.div`
 `;
 
 const ShortText = styled.p`
-  color: blue;
+  width: 100%;
 `;
 
 const PriceContainer = styled.div`
@@ -332,6 +333,7 @@ type DisplayProductsProps = {
 
 const ProductsGrid = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: column;
   // display: grid;
   // grid-template-columns: 1fr 1fr;
@@ -339,7 +341,10 @@ const ProductsGrid = styled.div`
 `;
 
 const ProductGridItem = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
+  width: 20vw;
 `;
 
 const AboutAnchorTag = styled.a``;
@@ -355,8 +360,11 @@ const DisplayProducts = (props: DisplayProductsProps) => {
       {products.map((product) => {
         return (
           <ProductGridItem key={product.id}>
-            {product.name}
-            {product.price.formatted_with_symbol}
+            <ShortText>{product.name}</ShortText>
+            <ShortText>{product.price.formatted_with_symbol}</ShortText>
+            <Link href={product.seo.description}>
+              <a>Watch Performance Video</a>
+            </Link>
             <Link href={product.checkout_url.display}>
               <a>About this Product</a>
             </Link>
@@ -500,18 +508,27 @@ const index: NextPage = function indexComponent<indexProps>({
                  productName="productName"
                  price="300"
                  imgUrl={undefined}
-               />
-             </Marquee>
-             </MarqueeContainer>
-             {ProductContainerComponent(products, false)}
+                 />
+                 </Marquee>
+                 </MarqueeContainer>
+                 <Marquee pauseOnHover={true}>
+                 </Marquee>
+                 {ProductContainerComponent(products, false)}
+                 <pre>{JSON.stringify(products, null, 2)}</pre>
             */}
         <DisplayProducts products={products} />
         <FooterContainer>
           <FooterItems>
-            <ZappConceptsLogoContainer>{"(415) - 321 - 4213"}</ZappConceptsLogoContainer>
+            <ZappConceptsLogoContainer>
+              {'(415) - 321 - 4213'}
+            </ZappConceptsLogoContainer>
           </FooterItems>
           <FooterItems>
-            <ZappConceptsLogoContainer>ZappConcepts (c) 2022</ZappConceptsLogoContainer>
+            <ZappConceptsLogoContainer>
+              <Link href="/#">
+                <a>ZappConcepts (c) 2022</a>
+              </Link>
+            </ZappConceptsLogoContainer>
           </FooterItems>
           <ThreeIconContainer>
             <FooterItems>Facebook</FooterItems>
@@ -519,8 +536,6 @@ const index: NextPage = function indexComponent<indexProps>({
             <FooterItems>Tik Tok</FooterItems>
           </ThreeIconContainer>
         </FooterContainer>
-        <pre>{JSON.stringify(products, null, 2)}</pre>
-        <Marquee></Marquee>
       </main>
     </>
   );
