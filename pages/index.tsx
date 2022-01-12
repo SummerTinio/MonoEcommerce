@@ -5,6 +5,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { withUser } from '@clerk/nextjs';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -18,10 +19,12 @@ import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from '../frontend/src/hooks';
 import { setProductList } from '../frontend/src/store/productListSlice';
 import { NextPage } from 'next/types';
+import { useUser, UserButton } from '@clerk/nextjs';
+
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps {}
+interface indexProps { }
 
 /** 
  const NavContainer = styled.nav`
@@ -71,6 +74,7 @@ const MarqueeProductNameContainer = styled.div`
 
 const NavContainer = styled.nav`
   margin: 0.4rem 1rem 0 1rem;
+  align-items: center !important;
   border-bottom: 0.5px solid;
   overflow: hidden;
   position: relative;
@@ -81,10 +85,12 @@ const NavContainer = styled.nav`
   align-items: baseline;
   justify-content: space-between;
   padding: ${padding};
+
 `;
 
-const NavItems = styled.span`
-  width: min-content;
+const NavItems = styled.div`
+  align-items: baseline;
+  width: 100%;
   padding: 1rem;
   background-color: orange;
   top: 0;
@@ -119,7 +125,7 @@ const MarqueePrice = styled.span`
 
 const ThreeIconContainer = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center
   justify-content: space-between;
 `;
 
@@ -344,7 +350,7 @@ const ProductGridItem = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  width: 20vw;
+  width: 30vw;
 `;
 
 const AboutAnchorTag = styled.a``;
@@ -377,6 +383,17 @@ const DisplayProducts = (props: DisplayProductsProps) => {
     </ProductsGrid>
   );
 };
+
+
+
+export function YTVideo({ }) {
+  return (
+    <>
+      <iframe width="100vw" height="100vh" src="https://www.youtube.com/embed/BiRAAmYTSfI?controls=0&autoplay=0&mute=1&showinfo=0&loop=1&amp;start=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+      </iframe>
+    </>
+  )
+}
 
 export function ProductContainerComponent(
   products: ICommerceJSProductPayload[],
@@ -416,6 +433,8 @@ const index: NextPage = function indexComponent<indexProps>({
   categories,
   products,
 }) {
+  const { firstName } = useUser();
+
   const productsArray = useAppSelector(
     (state) => state.productList.productList,
   );
@@ -482,13 +501,32 @@ const index: NextPage = function indexComponent<indexProps>({
           <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
         </NavItems>
         <ThreeIconContainer>
-          <NavItems>Home</NavItems>
-          <NavItems>User</NavItems>
-          <NavItems>Cart</NavItems>
+          {
+            /** 
+             <NavItems>Cart</NavItems>
+             * 
+             */
+          }
+          <NavItems>
+            <Link href="/">
+              <a>
+                Home
+              </a>
+            </Link>
+          </NavItems>
+          <NavItems>
+            <UserButton />
+          </NavItems>
         </ThreeIconContainer>
       </NavContainer>
       <main>
-        <VideoComponent noExtFileName="impact" format="mp4" />
+        {
+          /** 
+           <VideoComponent noExtFileName="impact" format="mp4" />
+           * 
+           <YTVideo />
+           */
+        }
         {/** 
            {ProductContainerComponent(products, true)}
            * 
@@ -517,6 +555,7 @@ const index: NextPage = function indexComponent<indexProps>({
                  <pre>{JSON.stringify(products, null, 2)}</pre>
             */}
         <DisplayProducts products={products} />
+
         <FooterContainer>
           <FooterItems>
             <ZappConceptsLogoContainer>
@@ -555,4 +594,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default index;
+export default withUser(index);
