@@ -3,6 +3,13 @@ import { Provider } from 'react-redux';
 import { store } from '../frontend/src/store/store';
 
 import { Global, css } from 'styled-components';
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from '@clerk/nextjs';
+import { useRouter } from 'next/router';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import type { AppProps } from 'next/app';
@@ -11,6 +18,11 @@ import Head from 'next/head';
 import theme from '../styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const publicPages = ['/'];
+  const { pathname } = useRouter();
+
+  const isPublicPage = publicPages.includes(pathname);
+
   const BRAND = '#242424';
   const BRANDLIGHT = '#373737';
   const GREY = '#bfbfbf';
@@ -55,7 +67,20 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CssBaseline />
         <Provider store={store}>
           {/** inside _app.tsx, can only hav 1 component -- if u have 2, you'd hav to render 2 component trees */}
-          <Component {...pageProps} />
+          <ClerkProvider>
+            {isPublicPage ? (
+              <Component {...pageProps} />
+            ) : (
+              <>
+                <SignedIn>
+                  <Component {...pageProps} />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            )}
+          </ClerkProvider>
         </Provider>
       </ThemeProvider>
     </>
