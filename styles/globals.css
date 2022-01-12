@@ -163,6 +163,10 @@ select {
   }
 }
 
+html, body {
+  font-family: caslonDoricRegular !important;
+}
+
 /** 
 *,
 html,
