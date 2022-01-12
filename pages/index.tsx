@@ -9,12 +9,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import SignInComponent from '../frontend/src/views/signInPage/SignInPage';
 
 import commerce from '../lib/commerce';
 import Marquee from 'react-fast-marquee';
-import StyledButton from '../frontend/src/components/StyledButton';
-import NavBar from '../frontend/src/views/app/NavBar';
 import styled from 'styled-components';
 
 import { useAppSelector, useAppDispatch } from '../frontend/src/hooks';
@@ -39,7 +36,9 @@ const padding = '0';
 
 const ZappConceptsLogoContainer = styled.div`
   background-color: yellow;
+  min-width: min-content;
   width: min-content;
+  white-space: nowrap;
 `;
 
 const ProductNameContainer = styled.div`
@@ -183,13 +182,6 @@ const ProductImage = styled.img`
   background-color: green;
 `;
 
-const FooterContainer = styled.footer`
-  // position: absolute;
-  // bottom: 0;
-  background-color: purple;
-  height: 6rem;
-`;
-
 const LandingPageVideoContainer = styled.div`
   position: absolute;
   top: 0;
@@ -197,7 +189,7 @@ const LandingPageVideoContainer = styled.div`
   height: 100%;
   width: 100%;
   z-index: -1;
-  opacity: .15;
+  opacity: 0.15;
   overflow: hidden;
 `;
 
@@ -207,9 +199,33 @@ const LandingPageVideo = styled.video`
   object-fit: cover;
 `;
 
+const FooterContainer = styled.footer`
+  margin: 0.4rem 1rem 0 1rem;
+  border-top: 0.5px solid;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex: 1;
+  background-color: pink;
+  vertical-align: baseline;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: ${padding};
+`;
+
+const FooterItems = styled.span`
+  width: min-content;
+  padding: 1rem;
+  background-color: orange;
+  top: 0;
+  left: 0;
+  flex: 1;
+  background-color: teal;
+`;
+
 interface IVideoProps {
-  noExtFileName: string,
-  format?: string,
+  noExtFileName: string;
+  format?: string;
 }
 
 export function VideoComponent({ noExtFileName, format }: IVideoProps) {
@@ -221,9 +237,8 @@ export function VideoComponent({ noExtFileName, format }: IVideoProps) {
         <source src={src} type={type} />
       </LandingPageVideo>
     </LandingPageVideoContainer>
-  )
+  );
 }
-
 
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
@@ -316,15 +331,20 @@ type DisplayProductsProps = {
 };
 
 const ProductsGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: column;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  // gap: 2rem;
 `;
 
 const ProductGridItem = styled.div`
   padding: 2rem;
 `;
 
+const AboutAnchorTag = styled.a``;
+
+const CheckoutAnchorTag = styled.a``;
 const DisplayProducts = (props: DisplayProductsProps) => {
   const { products } = props;
   console.log('products', products);
@@ -344,7 +364,6 @@ const DisplayProducts = (props: DisplayProductsProps) => {
               <a>Buy Now</a>
             </Link>
           </ProductGridItem>
-
         );
       })}
     </ProductsGrid>
@@ -462,8 +481,7 @@ const index: NextPage = function indexComponent<indexProps>({
       </NavContainer>
       <main>
         <VideoComponent noExtFileName="impact" format="mp4" />
-        {
-          /** 
+        {/** 
            {ProductContainerComponent(products, true)}
            * 
            <MarqueeContainer>
@@ -484,14 +502,26 @@ const index: NextPage = function indexComponent<indexProps>({
                  imgUrl={undefined}
                />
              </Marquee>
-           </MarqueeContainer>
-           {ProductContainerComponent(products, false)}
-           */
-        }
+             </MarqueeContainer>
+             {ProductContainerComponent(products, false)}
+            */}
         <DisplayProducts products={products} />
+        <FooterContainer>
+          <FooterItems>
+            <ZappConceptsLogoContainer>{"(415) - 321 - 4213"}</ZappConceptsLogoContainer>
+          </FooterItems>
+          <FooterItems>
+            <ZappConceptsLogoContainer>ZappConcepts (c) 2022</ZappConceptsLogoContainer>
+          </FooterItems>
+          <ThreeIconContainer>
+            <FooterItems>Facebook</FooterItems>
+            <FooterItems>Instagram</FooterItems>
+            <FooterItems>Tik Tok</FooterItems>
+          </ThreeIconContainer>
+        </FooterContainer>
+        <pre>{JSON.stringify(products, null, 2)}</pre>
+        <Marquee></Marquee>
       </main>
-      <pre>{JSON.stringify(products, null, 2)}</pre>
-      <FooterContainer>sdfsf</FooterContainer>
     </>
   );
 };
