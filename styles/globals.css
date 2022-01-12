@@ -163,12 +163,38 @@ select {
   }
 }
 
-/** 
+html,
+body {
+  --BRANDFONT: caslonDoricLight;
+  font-family: var(--BRANDFONT) !important;
+  --BRAND: #242424;
+  --BRANDLIGHT: #373737;
+  --GREY: #bfbfbf;
+  --GREYLIGHT: #d4d4d4;
+  --GREYDARK: #e1e1e1;
+  --WHITE: #f5f5f3;
+  --RED: #eb5757;
+  --GREEN: #12d60e;
+  --ANCHOR: #373737;
+  --BODY: var(--BRAND);
+  --BODYLIGHT: #787878;
+  --BORDER: #c6c6c6;
+  --ERROR: #bfbfbf;
+}
+
+body {
+  margin: 0.5rem !important;
+}
+
 *,
 html,
 body {
-  outline: black !important;
-  font-family: caslonDoricRegular !important;
-  background-color: white !important;
+  color: var(--WHITE) !important;
+  border-color: var(--BORDER) !important;
+  background-color: var(--BODY) !important;
+  overflow-x: hidden;
 }
-*/
+
+.overlay {
+  --gradient-color: rgba(245, 245, 243, 1) rgba(245, 245, 243, 0) !important;
+}
