@@ -168,7 +168,7 @@ body {
   --BRANDFONT: caslonDoricLight;
   font-family: var(--BRANDFONT) !important;
   --BRAND: #242424;
-  --BRANDLIGHT:#373737;
+  --BRANDLIGHT: #373737;
   --GREY: #bfbfbf;
   --GREYLIGHT: #d4d4d4;
   --GREYDARK: #e1e1e1;
@@ -185,9 +185,9 @@ body {
 *,
 html,
 body {
-  color: var(--BODY) !important;
+  color: var(--WHITE) !important;
   border-color: var(--BORDER) !important;
-  background-color: var(--WHITE) !important;
+  background-color: var(--BODY) !important;
   overflow-x: hidden;
 }
 
