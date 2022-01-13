@@ -179,6 +179,7 @@ const FooterContainer = styled.footer`
 {
   /**@ts-ignore */
 }
+/**@ts-ignore */
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
     <>
@@ -277,16 +278,14 @@ export function ProductContainerComponent(
   return <>{container}</>;
 }
 
-const index = function indexComponent<indexProps>({}) {
+const index = function indexComponent<indexProps>({ }) {
   async function init() {
     return await axios.get('https://jsonplaceholder.typicode.com/todos');
   }
   useEffect(() => {
     const res = init();
     console.log('its working!');
-    {
-      /**@ts-ignore */
-    }
+    /**@ts-ignore */
     console.log(res?.data);
   }, []);
 

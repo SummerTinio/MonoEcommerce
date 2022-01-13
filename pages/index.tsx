@@ -339,9 +339,6 @@ const ProductsGrid = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: column;
-  // display: grid;
-  // grid-template-columns: 1fr 1fr;
-  // gap: 2rem;
 `;
 
 const ProductGridItem = styled.div`
@@ -385,7 +382,7 @@ const DisplayProducts = (props: DisplayProductsProps) => {
   );
 };
 
-export function YTVideo({}) {
+export function YTVideo({ }) {
   return (
     <>
       <iframe
@@ -440,9 +437,8 @@ export function ProductContainerComponent(
 
 /**@ts-ignore */
 const Index: NextPage = function IndexComponent<indexProps>({
-  merchant,
-  categories,
-  products,
+  /**@ts-ignore */
+  products: any,
 }) {
   const { firstName } = useUser();
 
@@ -454,15 +450,18 @@ const Index: NextPage = function IndexComponent<indexProps>({
     console.log('its working!');
     // const res = await axios.get('https://jsonplaceholder.typicode.com/todos')
     // console.log(res.data);
-    console.log(merchant, categories, products);
+    // console.log(merchant, categories, products);
   };
   useEffect(() => {
     init();
   }, []);
 
-  useEffect(() => {
-    dispatch(setProductList(products));
+  /**
+   useEffect(() => {
+   dispatch(setProductList(productsArray));
   }, [products]);
+   * 
+    */
 
   const text = `you're at the / page sdasfsda!`;
 
@@ -562,6 +561,7 @@ const Index: NextPage = function IndexComponent<indexProps>({
                  {ProductContainerComponent(products, false)}
                  <pre>{JSON.stringify(products, null, 2)}</pre>
             */}
+        {/**@ts-ignore*/}
         <DisplayProducts products={products} />
 
         <FooterContainer>
@@ -589,14 +589,16 @@ const Index: NextPage = function IndexComponent<indexProps>({
 };
 
 export async function getServerSideProps() {
-  const merchant = await commerce.merchants.about();
-  const { data: categories } = await commerce.categories.list();
+  // const merchant = await commerce.merchants.about();
+  // const { data: categories } = await commerce.categories.list();
   const { data: products } = await commerce.products.list();
-
+  /** 
+   merchant,
+   categories,
+   * 
+   */
   return {
     props: {
-      merchant,
-      categories,
       products,
     },
   };

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:server": "nodemon",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "prepare": "husky install",
     "lint": "prettier --check .",
