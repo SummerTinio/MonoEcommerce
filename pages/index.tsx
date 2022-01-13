@@ -24,7 +24,7 @@ import { useUser, UserButton } from '@clerk/nextjs';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps { }
+interface indexProps {}
 
 /** 
  const NavContainer = styled.nav`
@@ -85,7 +85,6 @@ const NavContainer = styled.nav`
   align-items: baseline;
   justify-content: space-between;
   padding: ${padding};
-
 `;
 
 const NavItems = styled.div`
@@ -384,15 +383,19 @@ const DisplayProducts = (props: DisplayProductsProps) => {
   );
 };
 
-
-
-export function YTVideo({ }) {
+export function YTVideo({}) {
   return (
     <>
-      <iframe width="100vw" height="100vh" src="https://www.youtube.com/embed/BiRAAmYTSfI?controls=0&autoplay=0&mute=1&showinfo=0&loop=1&amp;start=0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-      </iframe>
+      <iframe
+        width="100vw"
+        height="100vh"
+        src="https://www.youtube.com/embed/BiRAAmYTSfI?controls=0&autoplay=0&mute=1&showinfo=0&loop=1&amp;start=0"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
     </>
-  )
+  );
 }
 
 export function ProductContainerComponent(
@@ -501,17 +504,13 @@ const index: NextPage = function indexComponent<indexProps>({
           <ZappConceptsLogoContainer>ZappConcepts</ZappConceptsLogoContainer>
         </NavItems>
         <ThreeIconContainer>
-          {
-            /** 
+          {/** 
              <NavItems>Cart</NavItems>
              * 
-             */
-          }
+             */}
           <NavItems>
             <Link href="/">
-              <a>
-                Home
-              </a>
+              <a>Home</a>
             </Link>
           </NavItems>
           <NavItems>
@@ -520,13 +519,11 @@ const index: NextPage = function indexComponent<indexProps>({
         </ThreeIconContainer>
       </NavContainer>
       <main>
-        {
-          /** 
+        {/** 
            <VideoComponent noExtFileName="impact" format="mp4" />
            * 
            <YTVideo />
-           */
-        }
+           */}
         {/** 
            {ProductContainerComponent(products, true)}
            * 

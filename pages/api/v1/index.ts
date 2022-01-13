@@ -12,7 +12,6 @@ export default async function handler(
   if (req.method === 'GET') {
     const users = await prisma.user.findMany();
     return res.json(users);
-
   } else if (req.method === 'POST') {
     const newUser = await prisma.user.create({
       name: req.body.name,
@@ -22,7 +21,6 @@ export default async function handler(
       deliveryAddress: req.body.deliveryAddress,
     });
     return res.json(newUser);
-
   } else if (req.method === 'PUT' || req.method === 'PATCH') {
     // we're still doing a put.
     const userId = req.query.id;

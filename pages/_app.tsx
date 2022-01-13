@@ -8,6 +8,7 @@ import {
   SignedIn,
   SignedOut,
   RedirectToSignIn,
+  withUser,
 } from '@clerk/nextjs';
 import { useRouter } from 'next/router';
 
