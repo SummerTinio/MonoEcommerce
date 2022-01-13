@@ -436,10 +436,7 @@ export function ProductContainerComponent(
 }
 
 /**@ts-ignore */
-const Index: NextPage = function IndexComponent<indexProps>({
-  /**@ts-ignore */
-  products: any,
-}) {
+const Index: NextPage = function IndexComponent<indexProps>(props) {
   const { firstName } = useUser();
 
   const productsArray = useAppSelector(
@@ -562,7 +559,7 @@ const Index: NextPage = function IndexComponent<indexProps>({
                  <pre>{JSON.stringify(products, null, 2)}</pre>
             */}
         {/**@ts-ignore*/}
-        <DisplayProducts products={products} />
+        <DisplayProducts products={props.products} />
 
         <FooterContainer>
           <FooterItems>
@@ -588,7 +585,7 @@ const Index: NextPage = function IndexComponent<indexProps>({
   );
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   // const merchant = await commerce.merchants.about();
   // const { data: categories } = await commerce.categories.list();
   const { data: products } = await commerce.products.list();
