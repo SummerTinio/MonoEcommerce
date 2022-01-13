@@ -1,0 +1,13 @@
+export const BRAND = '#242424';
+export const BRANDLIGHT = '#373737';
+export const GREY = '#bfbfbf';
+export const GREYLIGHT = '#d4d4d4';
+export const GREYDARK = '#e1e1e1';
+export const WHITE = '#f5f5f3';
+export const RED = '#eb5757';
+export const GREEN = '#12d60e';
+export const ANCHOR = '#373737';
+export const BODY = BRAND;
+export const BODYLIGHT = '#787878';
+export const BORDER = '#c6c6c6';
+export const ERROR = '#bfbfbf';

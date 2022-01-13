@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import { Provider } from 'react-redux';
 import { store } from '../frontend/src/store/store';
 
-import { Global, css } from 'styled-components';
+import { css } from 'styled-components';
 import {
   ClerkProvider,
   SignedIn,

@@ -24,8 +24,6 @@ import { useUser, UserButton } from '@clerk/nextjs';
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
 
-interface indexProps {}
-
 /** 
  const NavContainer = styled.nav`
  display: flex;
@@ -124,7 +122,7 @@ const MarqueePrice = styled.span`
 
 const ThreeIconContainer = styled.div`
   display: flex;
-  align-items: center
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -239,13 +237,14 @@ export function VideoComponent({ noExtFileName, format }: IVideoProps) {
   const type = `video/${format}`;
   return (
     <LandingPageVideoContainer>
-      <LandingPageVideo autoplay playsinline loop>
+      <LandingPageVideo>
         <source src={src} type={type} />
       </LandingPageVideo>
     </LandingPageVideoContainer>
   );
 }
 
+/**@ts-ignore */
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
     <>
@@ -340,9 +339,6 @@ const ProductsGrid = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: column;
-  // display: grid;
-  // grid-template-columns: 1fr 1fr;
-  // gap: 2rem;
 `;
 
 const ProductGridItem = styled.div`
@@ -367,12 +363,15 @@ const DisplayProducts = (props: DisplayProductsProps) => {
           <ProductGridItem key={product.id}>
             <ShortText>{product.name}</ShortText>
             <ShortText>{product.price.formatted_with_symbol}</ShortText>
+            {/**@ts-ignore */}
             <Link href={product.seo.description}>
               <a>Watch Performance Video</a>
             </Link>
+            {/**@ts-ignore */}
             <Link href={product.checkout_url.display}>
               <a>About this Product</a>
             </Link>
+            {/**@ts-ignore */}
             <Link href={product.checkout_url.checkout}>
               <a>Buy Now</a>
             </Link>
@@ -383,7 +382,7 @@ const DisplayProducts = (props: DisplayProductsProps) => {
   );
 };
 
-export function YTVideo({}) {
+export function YTVideo({ }) {
   return (
     <>
       <iframe
@@ -392,7 +391,6 @@ export function YTVideo({}) {
         src="https://www.youtube.com/embed/BiRAAmYTSfI?controls=0&autoplay=0&mute=1&showinfo=0&loop=1&amp;start=0"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
       ></iframe>
     </>
   );
@@ -407,10 +405,13 @@ export function ProductContainerComponent(
     container = (
       <ProductContainer>
         <ProductHalfContainer>
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
         </ProductHalfContainer>
         <ProductHalfContainer>
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
         </ProductHalfContainer>
       </ProductContainer>
@@ -419,10 +420,13 @@ export function ProductContainerComponent(
     container = (
       <ProductContainer>
         <ProductHalfContainer>
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
         </ProductHalfContainer>
         <ProductHalfContainer>
+          {/**@ts-ignore */}
           <SingleProductCardComponent />
         </ProductHalfContainer>
       </ProductContainer>
@@ -431,27 +435,30 @@ export function ProductContainerComponent(
   return <>{container}</>;
 }
 
-const index: NextPage = function indexComponent<indexProps>({
-  merchant,
-  categories,
-  products,
-}) {
+/**@ts-ignore */
+const Index: NextPage = function IndexComponent<indexProps>(props) {
   const { firstName } = useUser();
 
   const productsArray = useAppSelector(
     (state) => state.productList.productList,
   );
   const dispatch = useAppDispatch();
-  useEffect(async () => {
+  const init = async () => {
     console.log('its working!');
     // const res = await axios.get('https://jsonplaceholder.typicode.com/todos')
     // console.log(res.data);
-    console.log(merchant, categories, products);
+    // console.log(merchant, categories, products);
+  };
+  useEffect(() => {
+    init();
   }, []);
 
-  useEffect(() => {
-    dispatch(setProductList(products));
+  /**
+   useEffect(() => {
+   dispatch(setProductList(productsArray));
   }, [products]);
+   * 
+    */
 
   const text = `you're at the / page sdasfsda!`;
 
@@ -551,7 +558,8 @@ const index: NextPage = function indexComponent<indexProps>({
                  {ProductContainerComponent(products, false)}
                  <pre>{JSON.stringify(products, null, 2)}</pre>
             */}
-        <DisplayProducts products={products} />
+        {/**@ts-ignore*/}
+        <DisplayProducts products={props.products} />
 
         <FooterContainer>
           <FooterItems>
@@ -577,18 +585,21 @@ const index: NextPage = function indexComponent<indexProps>({
   );
 };
 
-export async function getServerSideProps() {
-  const merchant = await commerce.merchants.about();
-  const { data: categories } = await commerce.categories.list();
+export async function getStaticProps() {
+  // const merchant = await commerce.merchants.about();
+  // const { data: categories } = await commerce.categories.list();
   const { data: products } = await commerce.products.list();
-
+  /** 
+   merchant,
+   categories,
+   * 
+   */
   return {
     props: {
-      merchant,
-      categories,
       products,
     },
   };
 }
 
-export default withUser(index);
+/**@ts-ignore */
+export default withUser(Index);
