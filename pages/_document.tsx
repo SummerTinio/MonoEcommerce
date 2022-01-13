@@ -6,8 +6,6 @@ import theme from '../styles/theme';
 import { NextPageContext } from 'next';
 import { style } from '@mui/system';
 
-interface MyDocumentProps {}
-
 const MyDocument = function MyDocumentComponent<MyDocumentProps>({}) {
   return (
     <>
@@ -35,14 +33,18 @@ const MyDocument = function MyDocumentComponent<MyDocumentProps>({}) {
 
 MyDocument.getInitialProps = async (ctx: NextPageContext) => {
   const sheet = new ServerStyleSheet();
+  /**@ts-ignore */
   const originalRenderPage = ctx.renderPage;
 
   try {
+    /**@ts-ignore */
     ctx.renderPage = () =>
       originalRenderPage({
+        /**@ts-ignore */
         enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
       });
 
+    /**@ts-ignore */
     const initialProps = await Document.getInitialProps(ctx);
     return {
       ...initialProps,

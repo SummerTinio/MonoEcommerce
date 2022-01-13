@@ -14,6 +14,7 @@ export default async function handler(
     return res.json(users);
   } else if (req.method === 'POST') {
     const newUser = await prisma.user.create({
+      /** @ts-ignore */
       name: req.body.name,
       username: req.body.username,
       email: req.body.email,
@@ -28,6 +29,7 @@ export default async function handler(
 
     const updatedUser = await prisma.user.update({
       where: {
+        /**@ts-ignore */
         id: `${userId}`,
       },
       data: {
@@ -39,6 +41,7 @@ export default async function handler(
     const userId = req.query.id;
     const deletedUser = await prisma.user.delete({
       where: {
+        /**@ts-ignore */
         id: `${userId}`,
       },
     });

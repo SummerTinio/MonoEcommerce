@@ -14,6 +14,7 @@ export default async function handler(
     return res.json(products);
   } else if (req.method === 'POST') {
     const newProduct = await prisma.product.create({
+      /**@ts-ignore */
       name: req.body.name,
       price: req.body.price,
       availableQuantity: req.body.availableQuantity,
@@ -26,6 +27,7 @@ export default async function handler(
 
     const updatedProduct = await prisma.product.update({
       where: {
+        /**@ts-ignore */
         id: `${productId}`,
       },
       data: {
@@ -37,6 +39,7 @@ export default async function handler(
     const productId = req.query.id;
     const deletedProduct = await prisma.product.delete({
       where: {
+        /**@ts-ignore */
         id: `${productId}`,
       },
     });

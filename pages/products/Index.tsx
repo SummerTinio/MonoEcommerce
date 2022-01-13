@@ -6,17 +6,12 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import SignInComponent from '../frontend/src/views/signInPage/SignInPage';
 
 import Marquee from 'react-fast-marquee';
-import StyledButton from '../frontend/src/components/StyledButton';
-import NavBar from '../frontend/src/views/app/NavBar';
 import styled from 'styled-components';
 
 /** @ts-ignore */
 // import CaslonDoric from './../public/fonts/CaslonDoric/CaslonDoric-Regular.otf';
-
-interface indexProps {}
 
 /** 
  const NavContainer = styled.nav`
@@ -177,12 +172,13 @@ const ProductImage = styled.img`
 `;
 
 const FooterContainer = styled.footer`
-  // position: absolute;
-  // bottom: 0;
   background-color: purple;
   height: 6rem;
 `;
 
+{
+  /**@ts-ignore */
+}
 export function MarqueeItemComponent({ imgUrl, productName, price }) {
   return (
     <>
@@ -288,6 +284,9 @@ const index = function indexComponent<indexProps>({}) {
   useEffect(() => {
     const res = init();
     console.log('its working!');
+    {
+      /**@ts-ignore */
+    }
     console.log(res?.data);
   }, []);
 
