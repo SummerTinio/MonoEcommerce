@@ -17,6 +17,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
 import theme from '../styles/theme';
+import Link from 'next/link';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const publicPages = ['/'];
@@ -69,18 +70,20 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Provider store={store}>
           {/** inside _app.tsx, can only hav 1 component -- if u have 2, you'd hav to render 2 component trees */}
           <ClerkProvider>
-            {isPublicPage ? (
-              <Component {...pageProps} />
-            ) : (
-              <>
-                <SignedIn>
-                  <Component {...pageProps} />
-                </SignedIn>
-                <SignedOut>
-                  <RedirectToSignIn />
-                </SignedOut>
-              </>
-            )}
+            <>
+              <SignedIn>
+                <Component {...pageProps} />
+              </SignedIn>
+              <SignedOut>
+                <Link href="/products">
+                  <a>Please log in</a>
+                </Link>
+                <RedirectToSignIn />
+              </SignedOut>
+              {/** 
+                 * 
+                */}
+            </>
           </ClerkProvider>
         </Provider>
       </ThemeProvider>
