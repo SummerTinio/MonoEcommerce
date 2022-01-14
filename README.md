@@ -313,28 +313,27 @@ As a **buyer**, users may:
     - RESTful API
       - features -> CRUD functions -> http methods -> RESTful endpoints -> scoped authorization middleware -> PSQL transactions -> mock JSON API response -> onSuccess, onFail status codes
  
-  - TODO: Finish Backend Plan
-  - TODO: Finalize PSQL Tables
-  - TODO: Sort features and functionalities by priority and likely speed
+  - Finish Backend Plan
+  - Finalize PSQL Tables
+  - Sort features and functionalities by priority and likely speed
  
-  - TODO: Research & add Prisma-Postgres integration with app
-  - TODO: Create Mock UI Wireframe
-  - TODO: Finish 1/4 of Ecomm App
-  - TODO: Create custom errors, middleware for error handling,
-  - TODO: Scaffold Redux, action creators
-  - TODO: Implement authentication
+  - Research & add Prisma-Postgres integration with app
+  - Create Mock UI Wireframe
+  - Finish 1/4 of Ecomm App
+  - Scaffold Redux, action creators
+  - Implement authentication
  
 ## Day 3
-  - TODO: Implement, Finalize **Backend**
-  - TODO: Implement **Stripe Payments, 3rd-party API**
-  - TODO: Create Final PSQL table Diagrams
+  - Implement, Finalize **Backend**
+  - Implement **Stripe Payments, 3rd-party API**
+  - Create Final PSQL table Diagrams
  
 ## Day 4
-  - TODO: Implement, Finalize **Frontend**
-  - TODO: Create Final app Diagram
-  - TODO: **add aria- "polite" tag attributes** to dynamically loaded parts
-  - TODO: Finalize app deployment / deploy!
-    - Route53 --> zappconcepts.com
+  - Implement, Finalize **Frontend**
+  - Create Final app Diagram
+  - **add aria- "polite" tag attributes** to dynamically loaded parts
+  - Finalize app deployment / deploy!
+    - Namecheap nameservers --> zappconcepts.com
     - SSL
  
 ## Day 5
