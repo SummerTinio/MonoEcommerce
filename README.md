@@ -214,11 +214,15 @@ As a **buyer**, users may:
  
   #### **order_item** (reverse relation / in-between table)
     - id
-    - product_id
     - quantity
+    - frozen_price
+    - order_id
+    - product_id
     - **frozen_grand_total_cost** 
         - to ensure same price even if seller changes it
     - #### **Relations**
+        - order_item to products - 1:1
+        - order_item to order - many:1
 
   #### **order**
     - id
